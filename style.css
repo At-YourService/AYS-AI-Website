@@ -94,8 +94,8 @@ body {
 
 /* === HEADER === */
 header {
-  padding: 2rem var(--spacing-container);
-  position: fixed;
+/*  padding: 2rem var(--spacing-container);
+  position: fixed; */
   width: 100%;
   top: 0;
   z-index: 999;
