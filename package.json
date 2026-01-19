@@ -16,7 +16,7 @@
     "test:e2e:ui": "npm run build:test && playwright test --ui",
     "test:e2e:headed": "npm run build:test && playwright test --headed",
     "test:e2e:debug": "npm run build:test && playwright test --debug",
-    "test:build": "vitest run --config vitest.config.js tests/build",
+    "test:build": "vitest run --config vitest.config.build.js",
     "playwright:install": "playwright install --with-deps",
     "playwright:codegen": "playwright codegen http://localhost:3000"
   },
