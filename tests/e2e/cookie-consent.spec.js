@@ -1,5 +1,28 @@
 import { test, expect } from '@playwright/test';
 
+// Helper function to switch language based on viewport
+async function switchLanguage(page, lang) {
+  const viewport = page.viewportSize();
+  const isMobile = viewport.width < 768;
+
+  if (isMobile) {
+    // On mobile, use mobile nav language buttons
+    const mobileMenuOpen = await page.locator('.mobile-nav').evaluate(el => el.classList.contains('active'));
+    if (!mobileMenuOpen) {
+      await page.locator('.mobile-menu-btn').click();
+      await page.waitForTimeout(300);
+    }
+    const langButton = page.locator(`.mobile-nav .lang-text-btn[data-lang="${lang}"]`);
+    await langButton.waitFor({ state: 'visible', timeout: 5000 });
+    await langButton.click();
+  } else {
+    // On desktop, use header language buttons
+    const langButton = page.locator(`.header-actions .lang-text-btn[data-lang="${lang}"]`);
+    await langButton.waitFor({ state: 'visible', timeout: 5000 });
+    await langButton.click();
+  }
+}
+
 test.describe('Cookie Consent', () => {
   test.beforeEach(async ({ page, context }) => {
     // Clear storage before each test
@@ -57,7 +80,7 @@ test.describe('Cookie Consent', () => {
   test('should clear language preference when declining cookies', async ({ page }) => {
     // First accept cookies and set language
     await page.locator('#cookie-accept').click();
-    await page.locator('.lang-text-btn[data-lang="en"]').first().click();
+    await switchLanguage(page, 'en');
 
     // Wait for language change
     await expect(page.locator('[data-i18n="nav.services"]').first()).toHaveText('Services', { timeout: 10000 });
@@ -115,7 +138,7 @@ test.describe('Cookie Consent', () => {
     await page.locator('#cookie-decline').click();
 
     // Switch to English
-    await page.locator('.lang-text-btn[data-lang="en"]').first().click();
+    await switchLanguage(page, 'en');
     await expect(page.locator('[data-i18n="nav.services"]').first()).toHaveText('Services', { timeout: 10000 });
 
     // Clear storage and reload to reset
@@ -124,7 +147,7 @@ test.describe('Cookie Consent', () => {
     await page.waitForLoadState('networkidle');
 
     // Switch to English (without cookies accepted)
-    await page.locator('.lang-text-btn[data-lang="en"]').first().click();
+    await switchLanguage(page, 'en');
     await expect(page.locator('[data-i18n="nav.services"]').first()).toHaveText('Services', { timeout: 10000 });
 
     // Now accept cookies

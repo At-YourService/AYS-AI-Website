@@ -1,5 +1,23 @@
 import { test, expect } from '@playwright/test';
 
+// Helper function to navigate to section based on viewport
+async function navigateToSection(page, href) {
+  const viewport = page.viewportSize();
+  const isMobile = viewport.width < 768;
+
+  if (isMobile) {
+    // On mobile, open mobile menu and click link there
+    await page.locator('.mobile-menu-btn').click();
+    await page.waitForTimeout(300); // Wait for menu animation
+    await page.locator(`.mobile-nav a[href="${href}"]`).click();
+  } else {
+    // On desktop, wait for nav to be visible and click
+    const navLink = page.locator(`.desktop-nav a[href="${href}"]`);
+    await navLink.waitFor({ state: 'visible', timeout: 5000 });
+    await navLink.click();
+  }
+}
+
 test.describe('Navigation', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.clearCookies();
@@ -10,8 +28,8 @@ test.describe('Navigation', () => {
   });
 
   test('should navigate to services section via anchor link', async ({ page }) => {
-    // Click services link
-    await page.locator('a[href="#services"]').first().click();
+    // Click services link using viewport-aware helper
+    await navigateToSection(page, '#services');
 
     // Wait for URL hash to update
     await page.waitForURL('**/#services', { timeout: 5000 });
@@ -29,7 +47,7 @@ test.describe('Navigation', () => {
 
   test('should navigate to method section via anchor link', async ({ page }) => {
     // Click method link
-    await page.locator('a[href="#method"]').first().click();
+    await navigateToSection(page, '#method');
 
     // Wait for URL hash to update
     await page.waitForURL('**/#method', { timeout: 5000 });
@@ -47,7 +65,7 @@ test.describe('Navigation', () => {
 
   test('should navigate to partners section via anchor link', async ({ page }) => {
     // Click partners link
-    await page.locator('a[href="#partners"]').first().click();
+    await navigateToSection(page, '#partners');
 
     // Wait for URL hash to update
     await page.waitForURL('**/#partners', { timeout: 5000 });
@@ -65,7 +83,7 @@ test.describe('Navigation', () => {
 
   test('should navigate to contact section via anchor link', async ({ page }) => {
     // Click contact link
-    await page.locator('a[href="#contact"]').first().click();
+    await navigateToSection(page, '#contact');
 
     // Wait for URL hash to update
     await page.waitForURL('**/#contact', { timeout: 5000 });
@@ -79,17 +97,17 @@ test.describe('Navigation', () => {
 
   test('should update URL hash correctly on navigation', async ({ page }) => {
     // Navigate to services
-    await page.locator('a[href="#services"]').first().click();
+    await navigateToSection(page, '#services');
     await page.waitForURL('**/#services', { timeout: 5000 });
     expect(page.url()).toContain('#services');
 
     // Navigate to method
-    await page.locator('a[href="#method"]').first().click();
+    await navigateToSection(page, '#method');
     await page.waitForURL('**/#method', { timeout: 5000 });
     expect(page.url()).toContain('#method');
 
     // Navigate to partners
-    await page.locator('a[href="#partners"]').first().click();
+    await navigateToSection(page, '#partners');
     await page.waitForURL('**/#partners', { timeout: 5000 });
     expect(page.url()).toContain('#partners');
   });
@@ -99,7 +117,7 @@ test.describe('Navigation', () => {
     const initialScroll = await page.evaluate(() => window.scrollY);
 
     // Click a section link
-    await page.locator('a[href="#services"]').first().click();
+    await navigateToSection(page, '#services');
 
     // Wait a bit and check scroll position changed
     await page.waitForTimeout(500);
@@ -110,7 +128,7 @@ test.describe('Navigation', () => {
 
   test('should restore sticky positioning after scroll', async ({ page }) => {
     // Click a section link
-    await page.locator('a[href="#services"]').first().click();
+    await navigateToSection(page, '#services');
 
     // Wait for scroll animation and position restore
     await page.waitForTimeout(1000);
@@ -145,19 +163,19 @@ test.describe('Navigation', () => {
 
   test('should navigate through multiple sections sequentially', async ({ page }) => {
     // Navigate to services
-    await page.locator('a[href="#services"]').first().click();
+    await navigateToSection(page, '#services');
     await page.waitForURL('**/#services', { timeout: 5000 });
     await page.waitForTimeout(500);
     expect(page.url()).toContain('#services');
 
     // Navigate to method
-    await page.locator('a[href="#method"]').first().click();
+    await navigateToSection(page, '#method');
     await page.waitForURL('**/#method', { timeout: 5000 });
     await page.waitForTimeout(500);
     expect(page.url()).toContain('#method');
 
     // Navigate to partners
-    await page.locator('a[href="#partners"]').first().click();
+    await navigateToSection(page, '#partners');
     await page.waitForURL('**/#partners', { timeout: 5000 });
     await page.waitForTimeout(500);
     expect(page.url()).toContain('#partners');
@@ -173,7 +191,7 @@ test.describe('Navigation', () => {
     await page.waitForTimeout(500);
 
     // Navigate back to top section
-    await page.locator('a[href="#services"]').first().click();
+    await navigateToSection(page, '#services');
     await page.waitForTimeout(1000);
 
     // Should scroll back up
@@ -202,11 +220,11 @@ test.describe('Navigation', () => {
 
   test('should handle rapid navigation clicks', async ({ page }) => {
     // Click multiple links quickly
-    await page.locator('a[href="#services"]').first().click();
+    await navigateToSection(page, '#services');
     await page.waitForTimeout(100);
-    await page.locator('a[href="#method"]').first().click();
+    await navigateToSection(page, '#method');
     await page.waitForTimeout(100);
-    await page.locator('a[href="#partners"]').first().click();
+    await navigateToSection(page, '#partners');
 
     // Wait for final URL to update
     await page.waitForURL('**/#partners', { timeout: 5000 });
@@ -235,14 +253,14 @@ test.describe('Navigation', () => {
 
   test('should maintain scroll position when navigating to already visible section', async ({ page }) => {
     // Navigate to services
-    await page.locator('a[href="#services"]').first().click();
+    await navigateToSection(page, '#services');
     await page.waitForTimeout(1000);
 
     // Get scroll position
     const scrollPos1 = await page.evaluate(() => window.scrollY);
 
     // Click services link again
-    await page.locator('a[href="#services"]').first().click();
+    await navigateToSection(page, '#services');
     await page.waitForTimeout(1000);
 
     // Scroll position should be similar (might scroll to exact position)
@@ -255,7 +273,7 @@ test.describe('Navigation', () => {
     // and it's restored after 800ms
 
     // Click a section
-    await page.locator('a[href="#services"]').first().click();
+    await navigateToSection(page, '#services');
 
     // Immediately check if position was modified
     await page.waitForTimeout(100);
