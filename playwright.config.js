@@ -48,25 +48,39 @@ export default defineConfig({
     video: 'retain-on-failure',
   },
 
-  /* Configure projects for major browsers */
+  /* Configure projects for major browsers with smart test distribution */
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      // Run: cookie consent, language switching, mobile menu (core functionality)
+      testMatch: [
+        '**/cookie-consent.spec.js',
+        '**/language-switching.spec.js',
+        '**/mobile-menu.spec.js',
+      ],
     },
 
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
+      // Run: navigation tests only (cross-browser verification)
+      testMatch: [
+        '**/navigation.spec.js',
+      ],
     },
 
     {
       name: 'mobile-chrome',
       use: { ...devices['Pixel 5'] },
+      // Run: header scroll and mobile-specific tests
+      testMatch: [
+        '**/header-scroll.spec.js',
+        '**/mobile-menu.spec.js',
+      ],
     },
 
     // Note: Mobile Safari temporarily disabled due to WebKit timing issues
-    // All tests pass on Chromium, Firefox, and Mobile Chrome
     // TODO: Add Mobile Safari-specific timeouts or skip annotations
     // {
     //   name: 'mobile-safari',
