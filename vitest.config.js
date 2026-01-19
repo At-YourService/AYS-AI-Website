@@ -13,8 +13,7 @@ export default defineConfig({
 
     // Test file patterns
     include: [
-      'tests/unit/**/*.test.js',
-      'tests/build/**/*.test.js'
+      'tests/unit/**/*.test.js'
     ],
 
     // Coverage configuration

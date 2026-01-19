@@ -97,7 +97,9 @@ describe('Translations', () => {
     it('should have expected method section keys', () => {
       const methodKeys = [
         'method.label',
-        'method.title',
+        'method.title.part1',
+        'method.title.part2',
+        'method.title.part3',
         'method.usp1.title',
         'method.usp1.text',
         'method.usp2.title',

@@ -40,11 +40,11 @@ describe('Language Functions', () => {
     it('should handle <br> tags safely by creating DOM nodes', () => {
       // Create an element with a translation that contains <br>
       const element = document.createElement('div');
-      element.setAttribute('data-i18n', 'method.title');
+      element.setAttribute('data-i18n', 'footer.cta.title');
       document.body.appendChild(element);
 
       // Simulate the safe <br> handling
-      const translatedText = translations['method.title']['en']; // "Real impact,<br>not just slides."
+      const translatedText = translations['footer.cta.title']['en']; // "Ready to make<br>AI work?"
 
       if (translatedText.includes('<br>')) {
         element.textContent = '';
