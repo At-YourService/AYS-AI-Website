@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Ask a Question
+    url: https://github.com/joren-biq/AYS-AI-Website/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 📧 Contact Support
+    url: mailto:info@at-yourservice.ai
+    about: Contact us directly for support or business inquiries
+  - name: 🌐 Visit Website
+    url: https://at-yourservice.ai
+    about: Visit our website for more information
