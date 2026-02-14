@@ -741,6 +741,37 @@ header.header-on-light .btn-dark {
   align-items: center;
 }
 
+.footer-collab a {
+  display: inline-block;
+  opacity: 1;
+  /* Override default opacity for images */
+  margin-bottom: 0.5rem;
+  margin-right: 1rem;
+  /* Add spacing between logos */
+}
+
+.bg-white {
+  background-color: white;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.footer-logo {
+  height: 25px;
+  /* Consistent height for logos */
+  width: auto;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.footer-logo.large {
+  height: 75px;
+}
+
+.footer-logo:hover {
+  opacity: 1;
+}
+
 .copyright {
   grid-column: 1 / -1;
   margin-top: 4rem;
