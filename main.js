@@ -21,7 +21,7 @@ const elements = {
 // --- LANGUAGE LOGIC ---
 function setLanguage(lang) {
   state.lang = lang;
-  
+
   // Update UI Text
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
@@ -89,7 +89,7 @@ function declineCookies() {
   state.cookieConsent = 'declined';
   localStorage.setItem('cookieConsent', 'declined');
   // Clear any potential leftovers
-  localStorage.removeItem('lang'); 
+  localStorage.removeItem('lang');
   if (elements.cookieBanner) elements.cookieBanner.classList.add('hidden');
 }
 
@@ -193,6 +193,7 @@ function closeMobileMenu() {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
+
   // 1. Language Init
   if (elements.langBtns) {
     elements.langBtns.forEach(btn => {
@@ -201,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
-  
+
   // 2. Cookie Init
   initCookies();
   if (elements.btnAccept) elements.btnAccept.addEventListener('click', acceptCookies);
@@ -237,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 6. Handle anchor navigation for sticky sections
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
+    anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href');
       if (targetId === '#') return;
 
