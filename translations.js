@@ -32,13 +32,13 @@ export const translations = {
   // Services
   "services.label": { nl: "WAT WE DOEN", en: "WHAT WE DO" },
   "services.title": { nl: "Onze diensten", en: "Our Services" },
-  
+
   // Service 1: Discover
   "service.1.title": { nl: "Discover", en: "Discover" },
   "service.1.tag": { nl: "AI Strategie & Discovery", en: "AI Strategy & Discovery" },
-  "service.1.desc": { 
-    nl: "Bouw de juiste AI-visie, gebaseerd op echte bedrijfsnoden. We starten met luisteren: waar liggen de pijnpunten, kansen en prioriteiten?", 
-    en: "Build the right AI vision based on real business needs. We start by listening: where are the pain points, opportunities, and priorities?" 
+  "service.1.desc": {
+    nl: "Bouw de juiste AI-visie, gebaseerd op echte bedrijfsnoden. We starten met luisteren: waar liggen de pijnpunten, kansen en prioriteiten?",
+    en: "Build the right AI vision based on real business needs. We start by listening: where are the pain points, opportunities, and priorities?"
   },
   "service.1.list.1": { nl: "Pain point & opportunity workshops", en: "Pain point & opportunity workshops" },
   "service.1.list.2": { nl: "Businesscase & ROI-berekening", en: "Business case & ROI calculation" },
@@ -80,9 +80,10 @@ export const translations = {
   "footer.cta.title": { nl: "Klaar om AI te<br>laten werken?", en: "Ready to make<br>AI work?" },
   "footer.cta.text": { nl: "Plan een verkennend gesprek. Samen ontdekken we waar AI het meeste waarde creëert.", en: "Schedule a discovery call. Together we'll find where AI creates the most value." },
   "footer.cta.btn": { nl: "Neem contact op", en: "Get in touch" },
-  
+
   "footer.col.contact": { nl: "Contact", en: "Contact" },
   "footer.col.menu": { nl: "Menu", en: "Menu" },
+  "footer.col.collab": { nl: "In collab with", en: "In collab with" },
   "footer.col.socials": { nl: "Socials", en: "Socials" },
   "footer.copyright": { nl: "© 2026 at your service. All rights reserved.", en: "© 2026 at your service. All rights reserved." },
 
