@@ -4,10 +4,14 @@
 
 :root {
   /* Colors */
-  --color-dark: #162239; /* Deep Navy */
-  --color-secondary: #7ea0bc; /* Muted Blue */
-  --color-accent: #f5c05c; /* Vibrant Orange/Yellow */
-  --color-light: #f2f4f6; /* Off-white */
+  --color-dark: #162239;
+  /* Deep Navy */
+  --color-secondary: #7ea0bc;
+  /* Muted Blue */
+  --color-accent: #f5c05c;
+  /* Vibrant Orange/Yellow */
+  --color-light: #f2f4f6;
+  /* Off-white */
   --color-white: #ffffff;
   --color-border: rgba(22, 34, 57, 0.1);
   --color-border-light: rgba(255, 255, 255, 0.15);
@@ -20,7 +24,7 @@
   /* Typography */
   --font-main: 'Outfit', sans-serif;
   --font-serif: 'DM Serif Display', serif;
-  
+
   --text-display: clamp(4rem, 11vw, 9rem);
   --text-h1: clamp(3rem, 7vw, 6rem);
   --text-h2: clamp(2.5rem, 5vw, 4.5rem);
@@ -32,7 +36,8 @@
   --radius-pill: 999px;
   --spacing-container: 5vw;
   --header-height: 100px;
-  --header-height-scrolled: 70px; /* Reduced height on scroll */
+  --header-height-scrolled: 70px;
+  /* Reduced height on scroll */
 
   /* Easing */
   --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -94,7 +99,8 @@ header {
 .logo img {
   height: 120px;
   transition: all 0.4s var(--ease-out);
-  filter: none; /* Show original colored logo */
+  filter: none;
+  /* Show original colored logo */
 }
 
 header.header-scrolled .logo img {
@@ -107,7 +113,8 @@ header.header-on-dark {
 }
 
 header.header-on-dark .logo img {
-  filter: brightness(0) invert(1); /* White logo */
+  filter: brightness(0) invert(1);
+  /* White logo */
 }
 
 header.header-on-dark .desktop-nav {
@@ -125,7 +132,8 @@ header.header-on-accent {
 }
 
 header.header-on-accent .logo img {
-  filter: brightness(0); /* Black logo to match dark text */
+  filter: brightness(0);
+  /* Black logo to match dark text */
 }
 
 header.header-on-accent .desktop-nav {
@@ -287,7 +295,8 @@ header.header-on-light .btn-dark {
   max-width: 1600px;
   margin: 0 auto;
   position: relative;
-  z-index: 2; /* Content above shapes */
+  z-index: 2;
+  /* Content above shapes */
 }
 
 .centered {
@@ -325,16 +334,26 @@ header.header-on-light .btn-dark {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(22,34,57,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(22,34,57,0.03) 1px, transparent 1px);
+    linear-gradient(rgba(22, 34, 57, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 34, 57, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
   mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
 }
 
 @keyframes hero-gradient-float {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  33% { transform: translate(20px, -20px) rotate(2deg); }
-  66% { transform: translate(-15px, 15px) rotate(-1deg); }
+
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  33% {
+    transform: translate(20px, -20px) rotate(2deg);
+  }
+
+  66% {
+    transform: translate(-15px, 15px) rotate(-1deg);
+  }
 }
 
 /* Hero Container */
@@ -385,8 +404,17 @@ header.header-on-light .btn-dark {
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.3); opacity: 0.7; }
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.3);
+    opacity: 0.7;
+  }
 }
 
 /* Hero Title */
@@ -475,6 +503,7 @@ header.header-on-light .btn-dark {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -536,7 +565,8 @@ header.header-on-light .btn-dark {
 
 .service-item:hover {
   background-color: white;
-  box-shadow: 8px 8px 0 var(--color-accent); /* 80s retro hard shadow */
+  box-shadow: 8px 8px 0 var(--color-accent);
+  /* 80s retro hard shadow */
   border-color: var(--color-dark);
   transform: translate(-4px, -4px);
 }
@@ -545,6 +575,7 @@ header.header-on-light .btn-dark {
   margin-bottom: 2rem;
   color: var(--color-accent);
 }
+
 .service-icon .lucide {
   width: 48px;
   height: 48px;
@@ -564,12 +595,14 @@ header.header-on-light .btn-dark {
   color: var(--color-secondary);
   margin-bottom: 1.5rem;
   letter-spacing: 1px;
-  min-height: 2.4em; /* Ensure 2 lines of space for tags */
+  min-height: 2.4em;
+  /* Ensure 2 lines of space for tags */
 }
 
 /* Description text */
-.service-content > p:not(.service-tag) {
-  min-height: 6rem; /* Reduced whitespace while maintaining card alignment */
+.service-content>p:not(.service-tag) {
+  min-height: 6rem;
+  /* Reduced whitespace while maintaining card alignment */
   margin-bottom: 0;
 }
 
@@ -581,7 +614,7 @@ header.header-on-light .btn-dark {
 
 .service-list li {
   padding: 0.5rem 0;
-  border-top: 1px solid rgba(0,0,0,0.05);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   font-size: 0.95rem;
   font-weight: 500;
   opacity: 0.8;
@@ -594,6 +627,7 @@ header.header-on-light .btn-dark {
   opacity: 0;
   transition: opacity 0.3s;
 }
+
 .service-item:hover .service-arrow {
   opacity: 1;
 }
@@ -616,7 +650,8 @@ header.header-on-light .btn-dark {
   display: flex;
   gap: 2rem;
   padding: 2rem 0;
-  border-bottom: 1px solid rgba(0,255,255,0.1); /* Tweaked for dark bg */
+  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+  /* Tweaked for dark bg */
 }
 
 .usp-number {
@@ -639,7 +674,8 @@ header.header-on-light .btn-dark {
 
 /* Partner Logos */
 .partners-logos img {
-  height: 120px !important; /* Force bigger size */
+  height: 120px !important;
+  /* Force bigger size */
   max-width: 250px;
   object-fit: contain;
 }
@@ -670,7 +706,7 @@ header.header-on-light .btn-dark {
   width: 100%;
   padding: 4rem var(--spacing-container);
   border-top: 1px solid var(--color-border-light);
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .footer-grid {
@@ -686,7 +722,8 @@ header.header-on-light .btn-dark {
   opacity: 0.5;
 }
 
-.footer-col a, .footer-col p {
+.footer-col a,
+.footer-col p {
   display: block;
   margin-bottom: 0.5rem;
   font-size: 1.1rem;
@@ -707,8 +744,45 @@ header.header-on-light .btn-dark {
 .copyright {
   grid-column: 1 / -1;
   margin-top: 4rem;
-  opacity: 0.3;
+  color: rgba(255, 255, 255, 0.5);
+  /* Used instead of opacity to allow children to override */
   font-size: 0.9rem;
+}
+
+.copyright-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  /* If the footer grid justifies start, we might want this start too, but copyright was previously just a block */
+}
+
+/* Reset the block display from generic .footer-col a */
+.copyright a {
+  display: inline-block;
+  margin-bottom: 0;
+  font-size: 1em;
+  /* Inherit font size from parent */
+  color: rgba(255, 255, 255, 0.8);
+  /* Make links slightly brighter */
+  text-decoration: underline;
+  /* Add underline for clarity */
+}
+
+.copyright-links {
+  display: flex;
+  gap: 1rem;
+}
+
+/* === LEGAL PAGES === */
+.legal-content p {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.legal-content h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 /* === RESPONSIVE === */
@@ -945,7 +1019,7 @@ header.header-on-light .btn-dark {
     padding: 2rem;
   }
 
-  .service-content > p:not(.service-tag) {
+  .service-content>p:not(.service-tag) {
     min-height: auto;
   }
 
@@ -1038,7 +1112,7 @@ header.header-on-light .btn-dark {
   background-color: white;
   padding: 1.5rem 4rem;
   z-index: 1000;
-  box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1072,6 +1146,7 @@ header.header-on-light .btn-dark {
   text-decoration: underline;
   opacity: 0.6;
 }
+
 .cookie-links a:hover {
   opacity: 1;
 }
