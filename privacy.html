@@ -275,5 +275,32 @@
 
   </main>
 </body>
+<script>
+  // Email Protection Script (Inline to ensure execution)
+  (function () {
+    function protectEmail() {
+      const user = 'info';
+      const domain = 'at-yourservice.ai';
+      const email = user + '@' + domain;
+
+      const elements = document.querySelectorAll('.email-protect');
+      console.log('Found ' + elements.length + ' protected email elements');
+
+      for (var i = 0; i < elements.length; i++) {
+        var el = elements[i];
+        el.href = 'mailto:' + email;
+        if (el.getAttribute('data-show-email') === 'true') {
+          el.innerText = email;
+        }
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', protectEmail);
+    } else {
+      protectEmail();
+    }
+  })();
+</script>
 
 </html>
