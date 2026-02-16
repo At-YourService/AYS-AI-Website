@@ -55,30 +55,30 @@ export const translations = {
   "service.1.list.3": { nl: "AI roadmap op maat", en: "Custom AI roadmap" },
   "service.1.list.4": { nl: "Quick-win selectie", en: "Quick-win selection" },
 
-  // Service 2: Build
-  "service.2.title": { nl: "Build", en: "Build" },
-  "service.2.tag": { nl: "Custom AI-projecten & Automatisatie", en: "Custom AI Projects & Automation" },
-  "service.2.desc": { nl: "Maatwerk AI-oplossingen die echte bedrijfsproblemen oplossen.", en: "Custom AI solutions that solve real business problems." },
-  "service.2.list.1": { nl: "Workflow Automatisatie", en: "Workflow Automation" },
-  "service.2.list.2": { nl: "XLS– en documentautomatisatie", en: "XLS & document automation" },
-  "service.2.list.3": { nl: "AI Agents & Copilots", en: "AI Agents & Copilots" },
-  "service.2.list.4": { nl: "Rapid Prototyping (2-4 wkn)", en: "Rapid Prototyping (2-4 weeks)" },
-
-  // Service 3: Operations
-  "service.3.title": { nl: "Operations", en: "Operations" },
+  // Service 2: Virtuele Assistenten en AI Agents
+  "service.3.title": { nl: "Virtuele Assistenten en AI Agents", en: "Operations" },
   "service.3.tag": { nl: "Processen & Data", en: "Processes & Data" },
   "service.3.desc": { nl: "Maak van uw data een strategisch voordeel. Unified data die autonome agents voedt.", en: "Turn your data into a strategic advantage. Unified data that feeds autonomous agents." },
-  "service.3.list.1": { nl: "Data integratie (CRM, ERP...)", en: "Data integration (CRM, ERP...)" },
-  "service.3.list.2": { nl: "Unified “single source of truth”", en: "Unified “single source of truth”" },
-  "service.3.list.3": { nl: "Autonome AI-agents", en: "Autonomous AI agents" },
-  "service.3.list.4": { nl: "Event-based automation", en: "Event-based automation" },
+  "service.3.list.1": { nl: "Talk to your data", en: "Talk to your data" },
+  "service.3.list.2": { nl: "Workflow automatisatie", en: "Workflow automation" },
+  "service.3.list.3": { nl: "Activeer slimme interacties", en: "Activate smart automations" },
+  "service.3.list.4": { nl: "Voice geactiveerde agents", en: "Voice activated agents" },
+
+  // Service 3: AI Lab
+  "service.2.title": { nl: "AI Lab", en: "AI Lab" },
+  "service.2.tag": { nl: "Custom AI-projecten & Automatisatie", en: "Custom AI Projects & Automation" },
+  "service.2.desc": { nl: "Maatwerk AI-oplossingen die echte bedrijfsproblemen oplossen.", en: "Custom AI solutions that solve real business problems." },
+  "service.2.list.1": { nl: "Software Developement Lifecycle management automatisatie", en: "Software Developement Lifecycle management automation" },
+  "service.2.list.2": { nl: "AI driven User Acceptatie Testing", en: "AI driven User Acceptance Testing" },
+  "service.2.list.3": { nl: "Custom app building", en: "Custom app building" },
+  "service.2.list.4": { nl: "Rapid Prototyping", en: "Rapid Prototyping" },
 
   // Service 4: Service
   "service.4.title": { nl: "Service", en: "Service" },
   "service.4.tag": { nl: "Serviceplatform voor klanten & employees", en: "Service platform for clients & employees" },
   "service.4.desc": { nl: "Geef klanten en medewerkers de service-ervaring die ze verwachten — sneller, persoonlijker en efficiënter.", en: "Give customers and employees the service experience they expect — faster, more personal, and more efficient." },
-  "service.4.list.1": { nl: "Ticketing & case management", en: "Ticketing & case management" },
-  "service.4.list.2": { nl: "Knowledge base met AI-search", en: "Knowledge base with AI search" },
+  "service.4.list.1": { nl: "AI geactiveerde ticketing & case management", en: "AI activated ticketing & case management" },
+  "service.4.list.2": { nl: "Kennisdatabank met AI-search", en: "Knowledge base with AI search" },
   "service.4.list.3": { nl: "Employee service hub", en: "Employee service hub" },
   "service.4.list.4": { nl: "AI Voice Agents", en: "AI Voice Agents" },
 
