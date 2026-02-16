@@ -18,7 +18,7 @@ export const translations = {
   "jobs.highlight": { nl: "Vacatures.", en: "Vacancies." },
   "jobs.subtitle": { nl: "Bouw mee aan de toekomst van AI. Bekijk onze openstaande functies.", en: "Help build the future of AI. Check out our open positions." },
   "hero.line1": { nl: "Applied AI", en: "Applied AI" },
-  "hero.line2": { nl: "dat ", en: "that " },
+  "hero.line2": { nl: "met" en: "with" },
   "hero.line3": { nl: "impact.", en: "impact." },
   "hero.lead": {
     nl: "Bij 'at your service' helpen we bedrijven hun volgende stap zetten in AI. Van strategie tot implementatie, van serviceplatform tot AI-agents.",
