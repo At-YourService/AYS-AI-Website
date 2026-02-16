@@ -6,6 +6,6 @@
 ## 🌐 Live Sites
 
 - **Production**: https://at-yourservice.ai
-- **Staging (GitHub Pages)**: [https://joren-biq.github.io/AYS-AI-Website/](https://at-yourservice.github.io/AYS-AI-Website/)
+- **Staging (GitHub Pages)**: https://at-yourservice.github.io/AYS-AI-Website/
 
 Made with ❤️ in Antwerp, Belgium
