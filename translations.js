@@ -56,7 +56,7 @@ export const translations = {
   "service.1.list.4": { nl: "Quick-win selectie", en: "Quick-win selection" },
 
   // Service 2: Virtuele Assistenten en AI Agents
-  "service.3.title": { nl: "Virtuele Assistenten en AI Agents", en: "Operations" },
+  "service.3.title": { nl: "Virtuele Assistenten en AI Agents", en: "Virtuele Assistenten en AI Agents" },
   "service.3.tag": { nl: "Processen & Data", en: "Processes & Data" },
   "service.3.desc": { nl: "Maak van uw data een strategisch voordeel. Unified data die autonome agents voedt.", en: "Turn your data into a strategic advantage. Unified data that feeds autonomous agents." },
   "service.3.list.1": { nl: "Talk to your data", en: "Talk to your data" },
@@ -74,7 +74,7 @@ export const translations = {
   "service.2.list.4": { nl: "Rapid Prototyping", en: "Rapid Prototyping" },
 
   // Service 4: Service
-  "service.4.title": { nl: "Service", en: "Service" },
+  "service.4.title": { nl: "Customer & Employee experience", en: "Customer & Employee experience" },
   "service.4.tag": { nl: "Serviceplatform voor klanten & employees", en: "Service platform for clients & employees" },
   "service.4.desc": { nl: "Geef klanten en medewerkers de service-ervaring die ze verwachten — sneller, persoonlijker en efficiënter.", en: "Give customers and employees the service experience they expect — faster, more personal, and more efficient." },
   "service.4.list.1": { nl: "AI geactiveerde ticketing & case management", en: "AI activated ticketing & case management" },
