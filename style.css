@@ -586,6 +586,8 @@ header.header-on-light .btn-dark {
   font-weight: 800;
   margin-bottom: 0.5rem;
   letter-spacing: -1px;
+  min-height: 5rem;
+  /* Align headers across all cards */
 }
 
 .service-tag {
