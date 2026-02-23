@@ -197,72 +197,87 @@ async function loadContent(type) {
   const grid = document.getElementById(gridId);
   if (!grid) return;
 
+  console.log(`[ContentLoader] Loading ${type}...`);
   const folder = `./${type}`;
 
   try {
     const response = await fetch(`${folder}/manifest.json`);
-    if (!response.ok) throw new Error(`Could not load ${type} manifest`);
+    if (!response.ok) throw new Error(`Could not load ${type} manifest at ${folder}/manifest.json`);
     const files = await response.json();
+    console.log(`[ContentLoader] Found ${files.length} files for ${type}`);
 
     const items = await Promise.all(files.map(async (file) => {
-      const res = await fetch(`${folder}/${file}`);
-      if (!res.ok) return null;
-      const content = await res.text();
-
-      // Basic Frontmatter Parser
-      let title = '';
-      let category = type === 'news' ? 'News' : 'Job';
-      let excerpt = '';
-      let dateText = '';
-      let cleanContent = content;
-
-      if (content.startsWith('---')) {
-        const parts = content.split('---');
-        if (parts.length >= 3) {
-          const frontmatter = parts[1];
-          cleanContent = parts.slice(2).join('---').trim();
-
-          frontmatter.split('\n').forEach(line => {
-            const [key, ...valueParts] = line.split(':');
-            if (key && valueParts.length > 0) {
-              const value = valueParts.join(':').trim();
-              const k = key.trim().toLowerCase();
-              if (k === 'title') title = value;
-              if (k === 'category') category = value;
-              if (k === 'excerpt') excerpt = value;
-              if (k === 'date') dateText = value;
-            }
-          });
+      try {
+        const res = await fetch(`${folder}/${file}`);
+        if (!res.ok) {
+          console.warn(`[ContentLoader] Failed to fetch ${file}: ${res.status}`);
+          return null;
         }
-      }
+        const content = await res.text();
 
-      // Fallbacks
-      if (!title) {
-        const h1Match = cleanContent.match(/^# (.*)$/m);
-        title = h1Match ? h1Match[1] : file.replace('.md', '').replaceAll('_', ' ');
-      }
+        // Basic Frontmatter Parser
+        let title = '';
+        let category = type === 'news' ? 'News' : 'Job';
+        let excerpt = '';
+        let dateText = '';
+        let cleanContent = content;
 
-      // Date parsing for news (dd_MM_yyyy_text.md)
-      if (!dateText && type === 'news') {
-        const dateParts = file.split('_');
-        if (dateParts.length >= 3) {
-          const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-          const day = dateParts[0];
-          const monthIndex = parseInt(dateParts[1]) - 1;
-          const year = dateParts[2];
-          if (monthIndex >= 0 && monthIndex < 12) {
-            dateText = `${day} ${months[monthIndex]} ${year}`;
+        if (content.startsWith('---')) {
+          const parts = content.split('---');
+          if (parts.length >= 3) {
+            const frontmatter = parts[1];
+            cleanContent = parts.slice(2).join('---').trim();
+
+            frontmatter.split('\n').forEach(line => {
+              const colonIndex = line.indexOf(':');
+              if (colonIndex !== -1) {
+                const key = line.substring(0, colonIndex).trim().toLowerCase();
+                const value = line.substring(colonIndex + 1).trim();
+                if (key === 'title') title = value;
+                if (key === 'category') category = value;
+                if (key === 'excerpt') excerpt = value;
+                if (key === 'date') dateText = value;
+              }
+            });
           }
         }
+
+        // Fallbacks
+        if (!title) {
+          const h1Match = cleanContent.match(/^# (.*)$/m);
+          title = h1Match ? h1Match[1] : file.replace('.md', '').replaceAll('_', ' ');
+        }
+
+        // Date parsing for news (dd_MM_yyyy_text.md)
+        if (!dateText && type === 'news') {
+          const dateParts = file.split('_');
+          if (dateParts.length >= 3) {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const day = dateParts[0];
+            const monthIndex = parseInt(dateParts[1]) - 1;
+            const year = dateParts[2];
+            if (monthIndex >= 0 && monthIndex < 12) {
+              dateText = `${day} ${months[monthIndex]} ${year}`;
+            }
+          }
+        }
+
+        if (!dateText) dateText = 'Recent';
+
+        return { title, category, excerpt, date: dateText, file };
+      } catch (e) {
+        console.error(`[ContentLoader] Error processing ${file}:`, e);
+        return null;
       }
-
-      if (!dateText) dateText = 'Recent';
-
-      return { title, category, excerpt, date: dateText, file };
     }));
 
-    grid.innerHTML = items
-      .filter(i => i !== null)
+    const validItems = items.filter(i => i !== null);
+    if (validItems.length === 0) {
+      grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">Geen ${type} gevonden.</p>`;
+      return;
+    }
+
+    grid.innerHTML = validItems
       .map(item => `
         <article class="blog-card">
             <div class="blog-image">
@@ -286,9 +301,10 @@ async function loadContent(type) {
       `).join('');
 
     if (window.lucide) lucide.createIcons();
+    console.log(`[ContentLoader] Successfully rendered ${validItems.length} ${type} items`);
 
   } catch (error) {
-    console.error(`Error loading ${type}:`, error);
+    console.error(`[ContentLoader] Critical error loading ${type}:`, error);
     grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">Er is een fout opgetreden bij het laden van de ${type}.</p>`;
   }
 }
@@ -298,18 +314,22 @@ async function initPostDetail() {
   const container = document.getElementById('post-container');
   if (!container) return;
 
+  console.log('[PostDetail] Initializing...');
   const urlParams = new URLSearchParams(window.location.search);
   const type = urlParams.get('type');
   const file = urlParams.get('file');
 
   if (!type || !file) {
-    container.innerHTML = '<p>Bericht niet gevonden.</p>';
+    console.warn('[PostDetail] Missing type or file in URL parameters');
+    container.innerHTML = '<p>Bericht niet gevonden. Geen geldige parameters in de URL.</p>';
     return;
   }
 
   try {
-    const response = await fetch(`./${type}/${file}`);
-    if (!response.ok) throw new Error('Could not load content');
+    const fetchPath = `./${type}/${file}`;
+    console.log(`[PostDetail] Fetching content from: ${fetchPath}`);
+    const response = await fetch(fetchPath);
+    if (!response.ok) throw new Error(`Could not load content from ${fetchPath} (Status: ${response.status})`);
     const content = await response.text();
 
     let cleanContent = content;
@@ -324,10 +344,10 @@ async function initPostDetail() {
         cleanContent = parts.slice(2).join('---').trim();
 
         frontmatter.split('\n').forEach(line => {
-          const [key, ...valueParts] = line.split(':');
-          if (key && valueParts.length > 0) {
-            const k = key.trim().toLowerCase();
-            const v = valueParts.join(':').trim();
+          const colonIndex = line.indexOf(':');
+          if (colonIndex !== -1) {
+            const k = line.substring(0, colonIndex).trim().toLowerCase();
+            const v = line.substring(colonIndex + 1).trim();
             if (k === 'title') title = v;
             if (k === 'category') category = v;
             if (k === 'date') dateStr = v;
@@ -342,16 +362,22 @@ async function initPostDetail() {
       title = h1Match ? h1Match[1] : file.split('_').slice(3).join(' ').replace('.md', '');
     }
 
-    // Process markdown (removing the H1 if it was parsed as title to avoid duplication)
+    console.log(`[PostDetail] Rendering post: ${title}`);
+
+    // Process markdown
+    if (!window.marked) {
+      throw new Error('Marked.js library is not loaded');
+    }
+
     const markdownToRender = cleanContent.replace(/^# .*$/m, '').trim();
     const htmlContent = marked.parse(markdownToRender);
 
     container.innerHTML = `
       <article class="post-article">
         <header class="post-header">
-          <div class="post-meta">
-            ${dateStr ? `<span class="post-date">${dateStr}</span>` : ''}
-            ${category ? `<span class="post-category">${category}</span>` : ''}
+          <div class="post-meta" style="margin-bottom: 20px;">
+            ${dateStr ? `<span class="post-date" style="margin-right: 15px; color: #666;">${dateStr}</span>` : ''}
+            ${category ? `<span class="post-category" style="color: var(--primary-color); font-weight: 600;">${category}</span>` : ''}
           </div>
           <h1 class="post-title">${title}</h1>
         </header>
@@ -361,12 +387,11 @@ async function initPostDetail() {
       </article>
     `;
 
-    // Update document title
     document.title = `${title} | at your service`;
 
   } catch (error) {
-    console.error('Error loading post:', error);
-    container.innerHTML = '<p>Er is een fout opgetreden bij het laden van de inhoud.</p>';
+    console.error('[PostDetail] Critical error:', error);
+    container.innerHTML = `<p style="text-align: center; color: red;">Er is een fout opgetreden bij het laden van de inhoud: ${error.message}</p>`;
   }
 }
 
