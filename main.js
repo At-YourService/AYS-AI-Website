@@ -191,25 +191,29 @@ function closeMobileMenu() {
   }
 }
 
-// --- NEWS LOADING LOGIC ---
-async function loadNews() {
-  const blogGrid = document.getElementById('blog-grid');
-  if (!blogGrid) return;
+// --- CONTENT LOADING LOGIC (News & Jobs) ---
+async function loadContent(type) {
+  const gridId = type === 'news' ? 'blog-grid' : 'jobs-grid';
+  const grid = document.getElementById(gridId);
+  if (!grid) return;
+
+  const folder = `./${type}`;
 
   try {
-    const response = await fetch('./news/manifest.json');
-    if (!response.ok) throw new Error('Could not load news manifest');
-    const articleFiles = await response.json();
+    const response = await fetch(`${folder}/manifest.json`);
+    if (!response.ok) throw new Error(`Could not load ${type} manifest`);
+    const files = await response.json();
 
-    const articles = await Promise.all(articleFiles.map(async (file) => {
-      const res = await fetch(`./news/${file}`);
+    const items = await Promise.all(files.map(async (file) => {
+      const res = await fetch(`${folder}/${file}`);
       if (!res.ok) return null;
       const content = await res.text();
 
-      // Basic Frontmatter Parser (extracts everything between top ---)
+      // Basic Frontmatter Parser
       let title = '';
-      let category = 'News';
+      let category = type === 'news' ? 'News' : 'Job';
       let excerpt = '';
+      let dateText = '';
       let cleanContent = content;
 
       if (content.startsWith('---')) {
@@ -222,72 +226,78 @@ async function loadNews() {
             const [key, ...valueParts] = line.split(':');
             if (key && valueParts.length > 0) {
               const value = valueParts.join(':').trim();
-              if (key.trim() === 'title') title = value;
-              if (key.trim() === 'category') category = value;
-              if (key.trim() === 'excerpt') excerpt = value;
+              const k = key.trim().toLowerCase();
+              if (k === 'title') title = value;
+              if (k === 'category') category = value;
+              if (k === 'excerpt') excerpt = value;
+              if (k === 'date') dateText = value;
             }
           });
         }
       }
 
-      // If title not in frontmatter, try to find first H1
+      // Fallbacks
       if (!title) {
         const h1Match = cleanContent.match(/^# (.*)$/m);
         title = h1Match ? h1Match[1] : file.replace('.md', '').replaceAll('_', ' ');
       }
 
-      // Extract date from filename: dd_MM_yyyy_text.md
-      const dateParts = file.split('_');
-      let dateStr = 'Recent';
-      if (dateParts.length >= 3) {
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const day = dateParts[0];
-        const monthIndex = parseInt(dateParts[1]) - 1;
-        const year = dateParts[2];
-        if (monthIndex >= 0 && monthIndex < 12) {
-          dateStr = `${day} ${months[monthIndex]} ${year}`;
+      // Date parsing for news (dd_MM_yyyy_text.md)
+      if (!dateText && type === 'news') {
+        const dateParts = file.split('_');
+        if (dateParts.length >= 3) {
+          const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          const day = dateParts[0];
+          const monthIndex = parseInt(dateParts[1]) - 1;
+          const year = dateParts[2];
+          if (monthIndex >= 0 && monthIndex < 12) {
+            dateText = `${day} ${months[monthIndex]} ${year}`;
+          }
         }
       }
 
-      return { title, category, excerpt, date: dateStr, file };
+      if (!dateText) dateText = 'Recent';
+
+      return { title, category, excerpt, date: dateText, file };
     }));
 
-    // Filter failed loads and render
-    blogGrid.innerHTML = articles
-      .filter(a => a !== null)
-      .map(article => `
+    grid.innerHTML = items
+      .filter(i => i !== null)
+      .map(item => `
         <article class="blog-card">
             <div class="blog-image">
                 <div class="placeholder-img"
                     style="background-color: #f1f3f6; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: #666;">
-                    <i data-lucide="image" style="width: 48px; height: 48px; opacity: 0.3;"></i>
+                    <i data-lucide="${type === 'news' ? 'image' : 'briefcase'}" style="width: 48px; height: 48px; opacity: 0.3;"></i>
                 </div>
             </div>
             <div class="blog-content">
                 <div class="blog-meta">
-                    <span class="blog-date">${article.date}</span>
-                    <span class="blog-category">${article.category}</span>
+                    <span class="blog-date">${item.date}</span>
+                    <span class="blog-category">${item.category}</span>
                 </div>
-                <h3 class="blog-title">${article.title}</h3>
-                <p class="blog-excerpt">${article.excerpt || 'Lees meer over dit onderwerp.'}</p>
-                <a href="#" class="blog-link" onclick="console.log('Open article: ${article.file}'); return false;">Lees meer <i data-lucide="arrow-right"></i></a>
+                <h3 class="blog-title">${item.title}</h3>
+                <p class="blog-excerpt">${item.excerpt || (type === 'news' ? 'Lees meer over dit onderwerp.' : 'Bekijk deze vacature.')}</p>
+                <a href="#" class="blog-link" onclick="console.log('Open ${type}: ${item.file}'); return false;">
+                    ${type === 'news' ? 'Lees meer' : 'Bekijk vacature'} <i data-lucide="arrow-right"></i>
+                </a>
             </div>
         </article>
       `).join('');
 
-    // Re-initialize icons
     if (window.lucide) lucide.createIcons();
 
   } catch (error) {
-    console.error('Error loading news:', error);
-    blogGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Er is een fout opgetreden bij het laden van het nieuws.</p>';
+    console.error(`Error loading ${type}:`, error);
+    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">Er is een fout opgetreden bij het laden van de ${type}.</p>`;
   }
 }
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
-  // 0. News Init
-  loadNews();
+  // 0. Content Init
+  loadContent('news');
+  loadContent('jobs');
 
   // 1. Language Init
   if (elements.langBtns) {

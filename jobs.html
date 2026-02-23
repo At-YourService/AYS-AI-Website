@@ -102,47 +102,11 @@
         <!-- Jobs Grid Section -->
         <section class="section-card light-section blog-section">
             <div class="container">
-                <div class="blog-grid">
-                    <!-- Job 1 -->
-                    <article class="blog-card">
-                        <div class="blog-image">
-                            <div class="placeholder-img"
-                                style="background-color: #e0e0e0; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: #666;">
-                                <i data-lucide="code" style="width: 48px; height: 48px; opacity: 0.5;"></i>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="blog-date">Full-time</span>
-                                <span class="blog-category">Technologie</span>
-                            </div>
-                            <h3 class="blog-title">AI Engineer</h3>
-                            <p class="blog-excerpt">Ontwerp en implementeer geavanceerde AI-agenten en
-                                automatisatie-oplossingen voor onze klanten.</p>
-                            <a href="#" class="blog-link">Bekijk vacature <i data-lucide="arrow-right"></i></a>
-                        </div>
-                    </article>
-
-                    <!-- Job 2 -->
-                    <article class="blog-card">
-                        <div class="blog-image">
-                            <div class="placeholder-img"
-                                style="background-color: #e0e0e0; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: #666;">
-                                <i data-lucide="briefcase" style="width: 48px; height: 48px; opacity: 0.5;"></i>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="blog-date">Full-time</span>
-                                <span class="blog-category">Strategie</span>
-                            </div>
-                            <h3 class="blog-title">AI Strategy Consultant</h3>
-                            <p class="blog-excerpt">Begeleid bedrijven in hun AI-transformatie. Vertaal business noden
-                                naar concrete AI-oplossingen.</p>
-                            <a href="#" class="blog-link">Bekijk vacature <i data-lucide="arrow-right"></i></a>
-                        </div>
-                    </article>
-
+                <div class="blog-grid" id="jobs-grid">
+                    <!-- Dynamic jobs will be loaded here -->
+                    <div class="loading-indicator" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <p>Loading jobs...</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -216,8 +180,9 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"
-        integrity="sha384-ya5H3qW3+3RDNSEr5WdyPLPQk7Nl3r0nqEKvOJSGEqKL3yLhVvRRHrVCWnqnLHnz"
+        integrity="sha384-ya5H3qW3+3RDNSEr5WdyPLPQk7Nl3r0nqEKvOJSGEqKL3yLhVvRRHrVCWnLHnz"
         crossorigin="anonymous"></script>
     <script type="module" src="./main.js"></script>
     <script>
