@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="at your service: Detail pagina" />
+    <title>Detail | at your service</title>
+    <link rel="stylesheet" href="./style.css" />
+    <style>
+        body {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        .post-content-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .post-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .post-body {
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .post-body h1,
+        .post-body h2,
+        .post-body h3 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .post-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .post-body ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .post-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+
+<body class="post-detail-page">
+    <!-- Header -->
+    <header id="main-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">
+                <img src="./At-your-service-LOGO_KLEUR.png" alt="at your service Logo" />
+            </a>
+            <nav class="desktop-nav">
+                <a href="index.html#method" data-i18n="nav.method">Aanpak</a>
+                <a href="index.html#services" data-i18n="nav.services">Diensten</a>
+                <a href="news.html" data-i18n="nav.news">Nieuws</a>
+                <a href="jobs.html" data-i18n="nav.jobs">Jobs</a>
+                <a href="index.html#partners" data-i18n="nav.partners">Partners</a>
+                <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
+            </nav>
+            <div class="header-actions">
+                <div class="lang-switcher">
+                    <button class="lang-text-btn active" data-lang="nl">NL</button>
+                    <span class="lang-sep">/</span>
+                    <button class="lang-text-btn" data-lang="en">EN</button>
+                </div>
+                <button class="mobile-menu-btn" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="post-content-wrapper">
+                <a href="javascript:history.back()" class="back-link">
+                    <i data-lucide="arrow-left"></i> Terug
+                </a>
+
+                <div id="post-container">
+                    <div class="loading-indicator" style="text-align: center; padding: 100px 0;">
+                        <p>Laden...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer" style="background: var(--bg-main);">
+        <div class="footer-grid">
+            <div class="footer-col copyright">
+                <div class="copyright-wrapper">
+                    <span data-i18n="footer.copyright">© 2026 at your service. All rights reserved.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+    <script type="module" src="./main.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+            if (window.lucide) lucide.createIcons();
+        });
+    </script>
+</body>
+
+</html>

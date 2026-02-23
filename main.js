@@ -278,7 +278,7 @@ async function loadContent(type) {
                 </div>
                 <h3 class="blog-title">${item.title}</h3>
                 <p class="blog-excerpt">${item.excerpt || (type === 'news' ? 'Lees meer over dit onderwerp.' : 'Bekijk deze vacature.')}</p>
-                <a href="#" class="blog-link" onclick="console.log('Open ${type}: ${item.file}'); return false;">
+                <a href="post.html?type=${type}&file=${item.file}" class="blog-link">
                     ${type === 'news' ? 'Lees meer' : 'Bekijk vacature'} <i data-lucide="arrow-right"></i>
                 </a>
             </div>
@@ -293,11 +293,89 @@ async function loadContent(type) {
   }
 }
 
+// --- POST DETAIL LOGIC ---
+async function initPostDetail() {
+  const container = document.getElementById('post-container');
+  if (!container) return;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const type = urlParams.get('type');
+  const file = urlParams.get('file');
+
+  if (!type || !file) {
+    container.innerHTML = '<p>Bericht niet gevonden.</p>';
+    return;
+  }
+
+  try {
+    const response = await fetch(`./${type}/${file}`);
+    if (!response.ok) throw new Error('Could not load content');
+    const content = await response.text();
+
+    let cleanContent = content;
+    let title = '';
+    let category = '';
+    let dateStr = '';
+
+    if (content.startsWith('---')) {
+      const parts = content.split('---');
+      if (parts.length >= 3) {
+        const frontmatter = parts[1];
+        cleanContent = parts.slice(2).join('---').trim();
+
+        frontmatter.split('\n').forEach(line => {
+          const [key, ...valueParts] = line.split(':');
+          if (key && valueParts.length > 0) {
+            const k = key.trim().toLowerCase();
+            const v = valueParts.join(':').trim();
+            if (k === 'title') title = v;
+            if (k === 'category') category = v;
+            if (k === 'date') dateStr = v;
+          }
+        });
+      }
+    }
+
+    // Fallback title from filename or H1
+    if (!title) {
+      const h1Match = cleanContent.match(/^# (.*)$/m);
+      title = h1Match ? h1Match[1] : file.split('_').slice(3).join(' ').replace('.md', '');
+    }
+
+    // Process markdown (removing the H1 if it was parsed as title to avoid duplication)
+    const markdownToRender = cleanContent.replace(/^# .*$/m, '').trim();
+    const htmlContent = marked.parse(markdownToRender);
+
+    container.innerHTML = `
+      <article class="post-article">
+        <header class="post-header">
+          <div class="post-meta">
+            ${dateStr ? `<span class="post-date">${dateStr}</span>` : ''}
+            ${category ? `<span class="post-category">${category}</span>` : ''}
+          </div>
+          <h1 class="post-title">${title}</h1>
+        </header>
+        <div class="post-body">
+          ${htmlContent}
+        </div>
+      </article>
+    `;
+
+    // Update document title
+    document.title = `${title} | at your service`;
+
+  } catch (error) {
+    console.error('Error loading post:', error);
+    container.innerHTML = '<p>Er is een fout opgetreden bij het laden van de inhoud.</p>';
+  }
+}
+
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
   // 0. Content Init
   loadContent('news');
   loadContent('jobs');
+  initPostDetail();
 
   // 1. Language Init
   if (elements.langBtns) {
