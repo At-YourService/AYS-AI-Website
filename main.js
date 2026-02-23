@@ -375,9 +375,9 @@ async function initPostDetail() {
     container.innerHTML = `
       <article class="post-article">
         <header class="post-header">
-          <div class="post-meta" style="margin-bottom: 20px;">
-            ${dateStr ? `<span class="post-date" style="margin-right: 15px; color: #666;">${dateStr}</span>` : ''}
-            ${category ? `<span class="post-category" style="color: var(--primary-color); font-weight: 600;">${category}</span>` : ''}
+          <div class="post-meta">
+            ${dateStr ? `<span class="post-date">${dateStr}</span>` : ''}
+            ${category ? `<span class="post-category">${category}</span>` : ''}
           </div>
           <h1 class="post-title">${title}</h1>
         </header>
