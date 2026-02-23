@@ -311,8 +311,9 @@ async function loadContent(type) {
 
 // --- POST DETAIL LOGIC ---
 async function initPostDetail() {
-  const container = document.getElementById('post-container');
-  if (!container) return;
+  const heroContainer = document.getElementById('post-hero-container');
+  const bodyContainer = document.getElementById('post-body-container');
+  if (!heroContainer || !bodyContainer) return;
 
   console.log('[PostDetail] Initializing...');
   const urlParams = new URLSearchParams(window.location.search);
@@ -321,7 +322,7 @@ async function initPostDetail() {
 
   if (!type || !file) {
     console.warn('[PostDetail] Missing type or file in URL parameters');
-    container.innerHTML = '<p>Bericht niet gevonden. Geen geldige parameters in de URL.</p>';
+    heroContainer.innerHTML = '<h1>Bericht niet gevonden.</h1>';
     return;
   }
 
@@ -372,26 +373,30 @@ async function initPostDetail() {
     const markdownToRender = cleanContent.replace(/^# .*$/m, '').trim();
     const htmlContent = marked.parse(markdownToRender);
 
-    container.innerHTML = `
-      <article class="post-article">
-        <header class="post-header">
-          <div class="post-meta">
-            ${dateStr ? `<span class="post-date">${dateStr}</span>` : ''}
-            ${category ? `<span class="post-category">${category}</span>` : ''}
-          </div>
-          <h1 class="post-title">${title}</h1>
-        </header>
-        <div class="post-body">
-          ${htmlContent}
+    // Hero Injection
+    heroContainer.innerHTML = `
+      <div class="hero-content">
+        <div class="post-meta">
+          ${dateStr ? `<span class="post-date">${dateStr}</span>` : ''}
+          ${category ? `<span class="post-category">${category}</span>` : ''}
         </div>
-      </article>
+        <h1 class="post-title">${title}</h1>
+      </div>
+    `;
+
+    // Body Injection
+    bodyContainer.innerHTML = `
+      <div class="post-body">
+        ${htmlContent}
+      </div>
     `;
 
     document.title = `${title} | at your service`;
 
   } catch (error) {
     console.error('[PostDetail] Critical error:', error);
-    container.innerHTML = `<p style="text-align: center; color: red;">Er is een fout opgetreden bij het laden van de inhoud: ${error.message}</p>`;
+    heroContainer.innerHTML = `<h1>Fout</h1>`;
+    bodyContainer.innerHTML = `<p style="text-align: center; color: red;">Er is een fout opgetreden bij het laden van de inhoud: ${error.message}</p>`;
   }
 }
 
