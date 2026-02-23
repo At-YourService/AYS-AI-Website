@@ -14,19 +14,21 @@ Daarom zoeken we een Business Development Manager die niet alleen deals sluit, m
 
 ## Wat ga je doen?
 
-1️⃣ Nieuwe business creëren
+### Nieuwe business creëren
 
 Jij opent deuren bij middelgrote en grote organisaties.
 Je bouwt je eigen pipeline en sluit zelfstandig deals.
 Je spot kansen in de markt en vertaalt die naar concrete AI-proposities.
 Je zit aan tafel met directie, innovatie- en datateams.
-2️⃣ Inhoudelijk het verschil maken
+
+### Inhoudelijk het verschil maken
 
 Je denkt mee over AI-strategie, use cases en technische oplossingen.
 Je helpt bij presales, workshops en proof-of-concepts.
 Je kunt – waar nodig – zelf meewerken aan een prototype of technische validatie.
 Je slaat de brug tussen business en tech.
-3️⃣ Van deal naar duurzame relatie
+
+### Van deal naar duurzame relatie
 
 Je blijft betrokken na de handtekening.
 Je bewaakt waardecreatie en klanttevredenheid.
@@ -40,6 +42,7 @@ Je kunt praten over modellen, maar ook over ROI.
 Je bent ondernemend, zelfstandig en comfortabel met targets.
 Je krijgt energie van bouwen — aan klanten én aan een organisatie.
 Je communiceert scherp en overtuigend (NL & EN).
+
 Bonuspunten als je:
 
 Zelf hebt geprogrammeerd of data science ervaring hebt.
