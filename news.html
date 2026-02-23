@@ -102,86 +102,11 @@
         <!-- News Grid Section -->
         <section class="section-card light-section blog-section">
             <div class="container">
-                <div class="blog-grid">
-                    <!-- Create 3 placeholder blog posts -->
-                    <article class="blog-card">
-                        <div class="blog-image">
-                            <div class="placeholder-img"
-                                style="background-color: #e0e0e0; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: #666;">
-                                <!-- Placeholder for actual image -->
-                                <i data-lucide="image" style="width: 48px; height: 48px; opacity: 0.5;"></i>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="blog-date">16 Feb 2026</span>
-                                <span class="blog-category">AI Trends</span>
-                            </div>
-                            <h3 class="blog-title">De Toekomst van AI Agents</h3>
-                            <p class="blog-excerpt">Hoe autonome agents de manier waarop we werken fundamenteel
-                                veranderen. Een diepe duik in de technologie achter de hype.</p>
-                            <a href="#" class="blog-link">Lees meer <i data-lucide="arrow-right"></i></a>
-                        </div>
-                    </article>
-
-                    <article class="blog-card">
-                        <div class="blog-image">
-                            <div class="placeholder-img"
-                                style="background-color: #e0e0e0; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: #666;">
-                                <i data-lucide="image" style="width: 48px; height: 48px; opacity: 0.5;"></i>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="blog-date">10 Feb 2026</span>
-                                <span class="blog-category">Project Update</span>
-                            </div>
-                            <h3 class="blog-title">Succesvolle Implementatie bij Klant X</h3>
-                            <p class="blog-excerpt">Case study: Hoe we de klantenservice van Klant X hebben
-                                getransformeerd met een op maat gemaakte AI-oplossing.</p>
-                            <a href="#" class="blog-link">Lees meer <i data-lucide="arrow-right"></i></a>
-                        </div>
-                    </article>
-
-                    <article class="blog-card">
-                        <div class="blog-image">
-                            <div class="placeholder-img"
-                                style="background-color: #e0e0e0; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: #666;">
-                                <i data-lucide="image" style="width: 48px; height: 48px; opacity: 0.5;"></i>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="blog-date">01 Feb 2026</span>
-                                <span class="blog-category">Events</span>
-                            </div>
-                            <h3 class="blog-title">At Your Service op AI Summit 2026</h3>
-                            <p class="blog-excerpt">Kom ons bezoeken op de jaarlijkse AI Summit. We demonstreren onze
-                                nieuwste agent-frameworks live.</p>
-                            <a href="#" class="blog-link">Lees meer <i data-lucide="arrow-right"></i></a>
-                        </div>
-                    </article>
-
-                    <!-- Adding more placeholders to show grid -->
-                    <article class="blog-card">
-                        <div class="blog-image">
-                            <div class="placeholder-img"
-                                style="background-color: #e0e0e0; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: #666;">
-                                <i data-lucide="image" style="width: 48px; height: 48px; opacity: 0.5;"></i>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="blog-date">25 Jan 2026</span>
-                                <span class="blog-category">Technologie</span>
-                            </div>
-                            <h3 class="blog-title">Generative UI: De Volgende Stap</h3>
-                            <p class="blog-excerpt">Waarom statische interfaces verleden tijd zijn en hoe AI dynamische
-                                gebruikerservaringen creëert.</p>
-                            <a href="#" class="blog-link">Lees meer <i data-lucide="arrow-right"></i></a>
-                        </div>
-                    </article>
-
+                <div class="blog-grid" id="blog-grid">
+                    <!-- Dynamic blog posts will be loaded here -->
+                    <div class="loading-indicator" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <p>Loading news...</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -255,6 +180,7 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"
         integrity="sha384-ya5H3qW3+3RDNSEr5WdyPLPQk7Nl3r0nqEKvOJSGEqKL3yLhVvRRHrVCWnqnLHnz"
         crossorigin="anonymous"></script>

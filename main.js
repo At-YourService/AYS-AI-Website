@@ -191,8 +191,103 @@ function closeMobileMenu() {
   }
 }
 
+// --- NEWS LOADING LOGIC ---
+async function loadNews() {
+  const blogGrid = document.getElementById('blog-grid');
+  if (!blogGrid) return;
+
+  try {
+    const response = await fetch('./news/manifest.json');
+    if (!response.ok) throw new Error('Could not load news manifest');
+    const articleFiles = await response.json();
+
+    const articles = await Promise.all(articleFiles.map(async (file) => {
+      const res = await fetch(`./news/${file}`);
+      if (!res.ok) return null;
+      const content = await res.text();
+
+      // Basic Frontmatter Parser (extracts everything between top ---)
+      let title = '';
+      let category = 'News';
+      let excerpt = '';
+      let cleanContent = content;
+
+      if (content.startsWith('---')) {
+        const parts = content.split('---');
+        if (parts.length >= 3) {
+          const frontmatter = parts[1];
+          cleanContent = parts.slice(2).join('---').trim();
+
+          frontmatter.split('\n').forEach(line => {
+            const [key, ...valueParts] = line.split(':');
+            if (key && valueParts.length > 0) {
+              const value = valueParts.join(':').trim();
+              if (key.trim() === 'title') title = value;
+              if (key.trim() === 'category') category = value;
+              if (key.trim() === 'excerpt') excerpt = value;
+            }
+          });
+        }
+      }
+
+      // If title not in frontmatter, try to find first H1
+      if (!title) {
+        const h1Match = cleanContent.match(/^# (.*)$/m);
+        title = h1Match ? h1Match[1] : file.replace('.md', '').replaceAll('_', ' ');
+      }
+
+      // Extract date from filename: dd_MM_yyyy_text.md
+      const dateParts = file.split('_');
+      let dateStr = 'Recent';
+      if (dateParts.length >= 3) {
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const day = dateParts[0];
+        const monthIndex = parseInt(dateParts[1]) - 1;
+        const year = dateParts[2];
+        if (monthIndex >= 0 && monthIndex < 12) {
+          dateStr = `${day} ${months[monthIndex]} ${year}`;
+        }
+      }
+
+      return { title, category, excerpt, date: dateStr, file };
+    }));
+
+    // Filter failed loads and render
+    blogGrid.innerHTML = articles
+      .filter(a => a !== null)
+      .map(article => `
+        <article class="blog-card">
+            <div class="blog-image">
+                <div class="placeholder-img"
+                    style="background-color: #f1f3f6; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: #666;">
+                    <i data-lucide="image" style="width: 48px; height: 48px; opacity: 0.3;"></i>
+                </div>
+            </div>
+            <div class="blog-content">
+                <div class="blog-meta">
+                    <span class="blog-date">${article.date}</span>
+                    <span class="blog-category">${article.category}</span>
+                </div>
+                <h3 class="blog-title">${article.title}</h3>
+                <p class="blog-excerpt">${article.excerpt || 'Lees meer over dit onderwerp.'}</p>
+                <a href="#" class="blog-link" onclick="console.log('Open article: ${article.file}'); return false;">Lees meer <i data-lucide="arrow-right"></i></a>
+            </div>
+        </article>
+      `).join('');
+
+    // Re-initialize icons
+    if (window.lucide) lucide.createIcons();
+
+  } catch (error) {
+    console.error('Error loading news:', error);
+    blogGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Er is een fout opgetreden bij het laden van het nieuws.</p>';
+  }
+}
+
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
+  // 0. News Init
+  loadNews();
 
   // 1. Language Init
   if (elements.langBtns) {
