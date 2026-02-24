@@ -287,10 +287,11 @@ async function loadContent(type) {
                 </div>
             </div>
             <div class="blog-content">
+                ${type === 'news' ? `
                 <div class="blog-meta">
                     <span class="blog-date">${item.date}</span>
                     <span class="blog-category">${item.category}</span>
-                </div>
+                </div>` : ''}
                 <h3 class="blog-title">${item.title}</h3>
                 <p class="blog-excerpt">${item.excerpt || (type === 'news' ? 'Lees meer over dit onderwerp.' : 'Bekijk deze vacature.')}</p>
                 <a href="post.html?type=${type}&file=${item.file}" class="blog-link">
@@ -376,10 +377,11 @@ async function initPostDetail() {
     // Hero Injection
     heroContainer.innerHTML = `
       <div class="hero-content">
+        ${type === 'news' ? `
         <div class="post-meta">
           ${dateStr ? `<span class="post-date">${dateStr}</span>` : ''}
           ${category ? `<span class="post-category">${category}</span>` : ''}
-        </div>
+        </div>` : ''}
         <h1 class="post-title">${title}</h1>
       </div>
     `;
