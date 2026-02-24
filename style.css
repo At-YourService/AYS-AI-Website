@@ -836,10 +836,10 @@ header.header-on-light .btn-dark {
 }
 
 .blog-card:hover {
-  transform: translateX(10px);
-  /* Slide right instead of up */
+  /* transform: translateX(10px); */
+  /* Slide right instead of up - DISABLED per user request */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-  border-color: transparent;
+  border-color: rgba(0, 0, 0, 0.1);
 }
 
 .blog-image {
@@ -893,11 +893,12 @@ header.header-on-light .btn-dark {
 
 /* === NEWS PAGE OVERRIDES === */
 /* Disable sticky section behavior for standard pages */
-.news-page .section-card {
-  position: relative;
-  top: auto;
-  min-height: auto;
-  height: auto;
+.news-page .section-card,
+.news-page .section-card.light-section {
+  position: relative !important;
+  top: auto !important;
+  min-height: auto !important;
+  height: auto !important;
   padding: 4rem 0;
   display: block;
 }
