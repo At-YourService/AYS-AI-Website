@@ -223,8 +223,9 @@ async function loadContent(type) {
         let image = '';
         let cleanContent = content;
 
-        if (content.startsWith('---')) {
-          const parts = content.split('---');
+        const cleanRawContent = content.trim();
+        if (cleanRawContent.startsWith('---')) {
+          const parts = cleanRawContent.split('---');
           if (parts.length >= 3) {
             const frontmatter = parts[1];
             cleanContent = parts.slice(2).join('---').trim();
@@ -266,6 +267,7 @@ async function loadContent(type) {
 
         if (!dateText) dateText = 'Recent';
 
+        console.log(`[ContentLoader] Processed ${file}: title="${title}", image="${image}"`);
         return { title, category, excerpt, date: dateText, image, file };
       } catch (e) {
         console.error(`[ContentLoader] Error processing ${file}:`, e);
