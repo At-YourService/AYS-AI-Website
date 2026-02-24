@@ -1,6 +1,7 @@
 ---
 title: Business Development Manager – AI Services
 excerpt: Bouw mee aan de toekomst van AI. Van strategie tot implementatie.
+image: images/job_1.jpg
 ---
 
 # Business Development Manager – AI Services

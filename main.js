@@ -220,6 +220,7 @@ async function loadContent(type) {
         let category = type === 'news' ? 'News' : 'Job';
         let excerpt = '';
         let dateText = '';
+        let image = '';
         let cleanContent = content;
 
         if (content.startsWith('---')) {
@@ -237,6 +238,7 @@ async function loadContent(type) {
                 if (key === 'category') category = value;
                 if (key === 'excerpt') excerpt = value;
                 if (key === 'date') dateText = value;
+                if (key === 'image') image = value;
               }
             });
           }
@@ -264,7 +266,7 @@ async function loadContent(type) {
 
         if (!dateText) dateText = 'Recent';
 
-        return { title, category, excerpt, date: dateText, file };
+        return { title, category, excerpt, date: dateText, image, file };
       } catch (e) {
         console.error(`[ContentLoader] Error processing ${file}:`, e);
         return null;
@@ -281,10 +283,14 @@ async function loadContent(type) {
       .map(item => `
         <article class="blog-card">
             <div class="blog-image">
+                ${item.image ? `
+                <img src="${item.image}" alt="${item.title}" style="width: 100%; height: 200px; object-fit: cover;">
+                ` : `
                 <div class="placeholder-img"
                     style="background-color: #f1f3f6; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: #666;">
                     <i data-lucide="${type === 'news' ? 'image' : 'briefcase'}" style="width: 48px; height: 48px; opacity: 0.3;"></i>
                 </div>
+                `}
             </div>
             <div class="blog-content">
                 ${type === 'news' ? `
