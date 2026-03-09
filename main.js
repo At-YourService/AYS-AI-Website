@@ -193,7 +193,7 @@ function closeMobileMenu() {
 
 // --- CONTENT LOADING LOGIC (News & Jobs) ---
 async function loadContent(type) {
-  const gridId = type === 'news' ? 'blog-grid' : 'jobs-grid';
+  const gridId = type === 'news' ? 'blog-grid' : (type === 'events' ? 'events-grid' : 'jobs-grid');
   const grid = document.getElementById(gridId);
   if (!grid) return;
 
@@ -201,10 +201,12 @@ async function loadContent(type) {
   const folder = `./${type}`;
 
   try {
+    console.log(`[ContentLoader] Calling fetch: ${folder}/manifest.json`);
     const response = await fetch(`${folder}/manifest.json`);
+    console.log(`[ContentLoader] Response status: ${response.status}`);
     if (!response.ok) throw new Error(`Could not load ${type} manifest at ${folder}/manifest.json`);
     const files = await response.json();
-    console.log(`[ContentLoader] Found ${files.length} files for ${type}`);
+    console.log(`[ContentLoader] Found ${files.length} files for ${type}:`, files);
 
     const items = await Promise.all(files.map(async (file) => {
       try {
@@ -217,7 +219,7 @@ async function loadContent(type) {
 
         // Basic Frontmatter Parser
         let title = '';
-        let category = type === 'news' ? 'News' : 'Job';
+        let category = type === 'news' ? 'News' : (type === 'events' ? 'Events' : 'Job');
         let excerpt = '';
         let dateText = '';
         let image = '';
@@ -251,8 +253,8 @@ async function loadContent(type) {
           title = h1Match ? h1Match[1] : file.replace('.md', '').replaceAll('_', ' ');
         }
 
-        // Date parsing for news (dd_MM_yyyy_text.md)
-        if (!dateText && type === 'news') {
+        // Date parsing for news and events (dd_MM_yyyy_text.md)
+        if (!dateText && (type === 'news' || type === 'events')) {
           const dateParts = file.split('_');
           if (dateParts.length >= 3) {
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -303,7 +305,7 @@ async function loadContent(type) {
                 <h3 class="blog-title">${item.title}</h3>
                 <p class="blog-excerpt">${item.excerpt || (type === 'news' ? 'Lees meer over dit onderwerp.' : 'Bekijk deze vacature.')}</p>
                 <a href="post.html?type=${type}&file=${item.file}" class="blog-link">
-                    ${type === 'news' ? 'Lees meer' : 'Bekijk vacature'} <i data-lucide="arrow-right"></i>
+                    ${type === 'news' || type === 'events' ? 'Lees meer' : 'Bekijk vacature'} <i data-lucide="arrow-right"></i>
                 </a>
             </div>
         </article>
@@ -346,6 +348,7 @@ async function initPostDetail() {
     let title = '';
     let category = '';
     let dateStr = '';
+    let imageStr = '';
 
     if (content.startsWith('---')) {
       const parts = content.split('---');
@@ -361,6 +364,7 @@ async function initPostDetail() {
             if (k === 'title') title = v;
             if (k === 'category') category = v;
             if (k === 'date') dateStr = v;
+            if (k === 'image') imageStr = v;
           }
         });
       }
@@ -385,7 +389,7 @@ async function initPostDetail() {
     // Hero Injection
     heroContainer.innerHTML = `
       <div class="hero-content">
-        ${type === 'news' ? `
+        ${type === 'news' || type === 'events' ? `
         <div class="post-meta">
           ${dateStr ? `<span class="post-date">${dateStr}</span>` : ''}
           ${category ? `<span class="post-category">${category}</span>` : ''}
@@ -397,6 +401,7 @@ async function initPostDetail() {
     // Body Injection
     bodyContainer.innerHTML = `
       <div class="post-body">
+        ${imageStr ? `<div class="post-featured-image"><img src="${imageStr}" alt="${title}" style="width: 100%; border-radius: 12px; margin-bottom: 2rem;"></div>` : ''}
         ${htmlContent}
       </div>
     `;
@@ -411,8 +416,10 @@ async function initPostDetail() {
 }
 
 // --- INITIALIZATION ---
-document.addEventListener('DOMContentLoaded', () => {
+function init() {
+  console.log('[Main] Initializing app...');
   // 0. Content Init
+  loadContent('events');
   loadContent('news');
   loadContent('jobs');
   initPostDetail();
@@ -490,4 +497,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-});
+}
+
+// Global initialization
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}

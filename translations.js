@@ -5,6 +5,7 @@ export const translations = {
   "nav.partners": { nl: "Partners", en: "Partners" },
   "nav.contact": { nl: "Contact", en: "Contact" },
   "nav.news": { nl: "Nieuws", en: "News" },
+  "nav.events": { nl: "Events", en: "Events" },
   "nav.jobs": { nl: "Jobs", en: "Jobs" },
 
   // Hero
@@ -13,6 +14,10 @@ export const translations = {
   "news.title": { nl: "Laatste", en: "Latest" },
   "news.highlight": { nl: "Nieuws.", en: "News." },
   "news.subtitle": { nl: "Blijf op de hoogte van de laatste ontwikkelingen in AI, onze projecten en inzichten.", en: "Stay up to date with the latest developments in AI, our projects and insights." },
+  "events.badge": { nl: "COMMUNITY & INSIGHTS", en: "COMMUNITY & INSIGHTS" },
+  "events.title": { nl: "Onze", en: "Our" },
+  "events.highlight": { nl: "Events.", en: "Events." },
+  "events.subtitle": { nl: "Ontmoet ons op onze Leadership Circles, workshops en AI summits.", en: "Meet us at our Leadership Circles, workshops and AI summits." },
   "jobs.badge": { nl: "JOIN THE TEAM", en: "JOIN THE TEAM" },
   "jobs.title": { nl: "Open", en: "Open" },
   "jobs.highlight": { nl: "Vacatures.", en: "Vacancies." },
