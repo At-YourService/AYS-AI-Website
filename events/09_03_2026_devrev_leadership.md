@@ -10,7 +10,7 @@ image: ./images/event_devrev_1.jpg
 
 Early access to DevRev Leadership Circle Amsterdam 2026!
 
-Sluit je bij ons aan om AI-agents aan het werk te zien en ervaar hoe machines en mensen naadloos samenwerken om ons iets onbetaalbaars terug te geven: onze avonden en weekenden. Laten we werk herstellen, want we zien allemaal dat het kapot is.
+Sluit je bij ons aan om AI-agents aan het werk te zien en ervaar hoe machines en mensen naadloos samenwerken om ons iets onbetaalbaars terug te geven: onze avonden en weekenden. Laten we werk herstellen, want we zien allemaal dat het stuk is.
 
 Na onze succesvolle Leadership Circle vorig jaar in april, en met overweldigende interesse en feedback van ons evenement in Londen op 20 november, zijn we enthousiast om terug te keren naar Amsterdam, samen met onze partners, voor een nieuwe editie gericht op de toekomst van intelligent werk.
 
