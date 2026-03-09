@@ -420,7 +420,7 @@ function init() {
   console.log('[Main] Initializing app...');
   // 0. Content Init
   loadContent('events');
-  loadContent('news');
+  // loadContent('news');
   loadContent('jobs');
   initPostDetail();
 

@@ -4,16 +4,6 @@ export const translations = {
   "nav.services": { nl: "Diensten", en: "Services" },
   "nav.partners": { nl: "Partners", en: "Partners" },
   "nav.contact": { nl: "Contact", en: "Contact" },
-  "nav.news": { nl: "Nieuws", en: "News" },
-  "nav.events": { nl: "Events", en: "Events" },
-  "nav.jobs": { nl: "Jobs", en: "Jobs" },
-
-  // Hero
-  "hero.badge": { nl: "APPLIED AI AGENCY", en: "APPLIED AI AGENCY" },
-  "news.badge": { nl: "INSIGHTS & UPDATES", en: "INSIGHTS & UPDATES" },
-  "news.title": { nl: "Laatste", en: "Latest" },
-  "news.highlight": { nl: "Nieuws.", en: "News." },
-  "news.subtitle": { nl: "Blijf op de hoogte van de laatste ontwikkelingen in AI, onze projecten en inzichten.", en: "Stay up to date with the latest developments in AI, our projects and insights." },
   "events.badge": { nl: "COMMUNITY & INSIGHTS", en: "COMMUNITY & INSIGHTS" },
   "events.title": { nl: "Onze", en: "Our" },
   "events.highlight": { nl: "Events.", en: "Events." },
