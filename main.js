@@ -199,8 +199,8 @@ function closeMobileMenu() {
 
 // --- LOCALIZATION HELPER ---
 async function resolveLocalizedFile(folder, filename, lang) {
-  if (lang === 'nl') return filename;
-  const localizedFilename = filename.replace(/\.md$/, `.${lang}.md`);
+  const localizedFilename = filename.replace(/_nl\.md$/, `_${lang}.md`);
+  if (localizedFilename === filename) return filename;
   try {
     const res = await fetch(`${folder}/${localizedFilename}`, { method: 'HEAD' });
     if (res.ok) return localizedFilename;
