@@ -349,9 +349,13 @@ async function initPostDetail() {
   }
 
   try {
-    const localizedFile = file.replace(/_nl\.md$/, `_${state.lang}.md`);
+    const baseFile = file.match(/_[a-z]{2}\.md$/) ? file : file.replace(/\.md$/, '_nl.md');
+    const localizedFile = baseFile.replace(/_nl\.md$/, `_${state.lang}.md`);
     let response = await fetch(`./${type}/${localizedFile}`);
-    if (!response.ok && localizedFile !== file) {
+    if (!response.ok && localizedFile !== baseFile) {
+      response = await fetch(`./${type}/${baseFile}`);
+    }
+    if (!response.ok) {
       response = await fetch(`./${type}/${file}`);
     }
     const fetchPath = `./${type}/${localizedFile}`;
