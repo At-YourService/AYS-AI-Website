@@ -401,8 +401,8 @@ async function initPostDetail() {
     // Body Injection
     bodyContainer.innerHTML = `
       <div class="post-body">
-        ${imageStr ? `<div class="post-featured-image"><img src="${imageStr}" alt="${title}" style="width: 100%; border-radius: 12px; margin-bottom: 2rem;"></div>` : ''}
         ${htmlContent}
+        ${imageStr ? `<div class="post-featured-image"><img src="${imageStr}" alt="${title}" style="width: 100%; border-radius: 12px; margin-top: 2rem;"></div>` : ''}
       </div>
     `;
 
