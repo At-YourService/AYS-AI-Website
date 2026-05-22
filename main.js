@@ -197,16 +197,6 @@ function closeMobileMenu() {
   }
 }
 
-// --- LOCALIZATION HELPER ---
-async function resolveLocalizedFile(folder, filename, lang) {
-  const localizedFilename = filename.replace(/_nl\.md$/, `_${lang}.md`);
-  if (localizedFilename === filename) return filename;
-  try {
-    const res = await fetch(`${folder}/${localizedFilename}`, { method: 'HEAD' });
-    if (res.ok) return localizedFilename;
-  } catch (e) {}
-  return filename;
-}
 
 // --- CONTENT LOADING LOGIC (News & Jobs) ---
 async function loadContent(type) {
@@ -227,8 +217,11 @@ async function loadContent(type) {
 
     const items = await Promise.all(files.map(async (file) => {
       try {
-        const localizedFile = await resolveLocalizedFile(folder, file, state.lang);
-        const res = await fetch(`${folder}/${localizedFile}`);
+        const localizedFile = file.replace(/_nl\.md$/, `_${state.lang}.md`);
+        let res = await fetch(`${folder}/${localizedFile}`);
+        if (!res.ok && localizedFile !== file) {
+          res = await fetch(`${folder}/${file}`);
+        }
         if (!res.ok) {
           console.warn(`[ContentLoader] Failed to fetch ${file}: ${res.status}`);
           return null;
@@ -356,10 +349,13 @@ async function initPostDetail() {
   }
 
   try {
-    const localizedFile = await resolveLocalizedFile(`./${type}`, file, state.lang);
+    const localizedFile = file.replace(/_nl\.md$/, `_${state.lang}.md`);
+    let response = await fetch(`./${type}/${localizedFile}`);
+    if (!response.ok && localizedFile !== file) {
+      response = await fetch(`./${type}/${file}`);
+    }
     const fetchPath = `./${type}/${localizedFile}`;
     console.log(`[PostDetail] Fetching content from: ${fetchPath}`);
-    const response = await fetch(fetchPath);
     if (!response.ok) throw new Error(`Could not load content from ${fetchPath} (Status: ${response.status})`);
     const content = await response.text();
 
