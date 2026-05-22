@@ -3,7 +3,7 @@ title: Computer Conversations Rotterdam
 category: Events
 excerpt: We're bringing Computer Conversations to Rotterdam on June 11 — a hands-on workshop at the iconic Van Nelle Factory where inspiration turns into execution.
 date: 11_06_2026
-image: ./images/computer_conversations_rotterdam.jpg
+image: ./images/computer_conversations_rotterdam.png
 ---
 
 # Computer Conversations Rotterdam

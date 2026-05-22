@@ -3,7 +3,7 @@ title: Computer Conversations Rotterdam
 category: Events
 excerpt: Op 11 juni brengen we DevRev's Computer Conversations naar Rotterdam — een hands-on workshop in de iconische Van Nelle Fabriek waar inspiratie wordt omgezet in actie.
 date: 11_06_2026
-image: ./images/computer_conversations_rotterdam.jpg
+image: ./images/computer_conversations_rotterdam.png
 ---
 
 # Computer Conversations Rotterdam
