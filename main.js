@@ -364,7 +364,7 @@ async function initPostDetail() {
             if (k === 'title') title = v;
             if (k === 'category') category = v;
             if (k === 'date') dateStr = v;
-            if (k === 'image') imageStr = v;
+            if (k === 'image') imageStr = v.startsWith('./') ? `./${type}/${v.slice(2)}` : v;
           }
         });
       }
