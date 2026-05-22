@@ -1,6 +1,7 @@
 import { translations } from './translations.js';
 
 // --- STATE MANAGEMENT ---
+let initialized = false;
 const state = {
   lang: 'nl', // Default
   cookieConsent: localStorage.getItem('cookieConsent') // null, 'accepted', 'declined'
@@ -61,11 +62,13 @@ function setLanguage(lang) {
     localStorage.setItem('lang', lang);
   }
 
-  // Reload language-dependent content
-  if (document.getElementById('blog-grid')) loadContent('news');
-  if (document.getElementById('events-grid')) loadContent('events');
-  if (document.getElementById('jobs-grid')) loadContent('jobs');
-  if (document.getElementById('post-body-container')) initPostDetail();
+  // Reload language-dependent content (only after init is complete)
+  if (initialized) {
+    if (document.getElementById('blog-grid')) loadContent('news');
+    if (document.getElementById('events-grid')) loadContent('events');
+    if (document.getElementById('jobs-grid')) loadContent('jobs');
+    if (document.getElementById('post-body-container')) initPostDetail();
+  }
 }
 
 // Remove toggleLanguage(), replace with specific listeners
@@ -437,11 +440,6 @@ async function initPostDetail() {
 // --- INITIALIZATION ---
 function init() {
   console.log('[Main] Initializing app...');
-  // 0. Content Init
-  loadContent('events');
-  loadContent('news');
-  loadContent('jobs');
-  initPostDetail();
 
   // 1. Language Init
   if (elements.langBtns) {
@@ -452,10 +450,17 @@ function init() {
     });
   }
 
-  // 2. Cookie Init
+  // 2. Cookie Init (may set state.lang from localStorage)
   initCookies();
   if (elements.btnAccept) elements.btnAccept.addEventListener('click', acceptCookies);
   if (elements.btnDecline) elements.btnDecline.addEventListener('click', declineCookies);
+
+  // 3. Content Init — runs after initCookies so state.lang is already correct
+  initialized = true;
+  loadContent('events');
+  loadContent('news');
+  loadContent('jobs');
+  initPostDetail();
 
   // 3. Scroll Init
   window.addEventListener('scroll', checkHeaderState);
