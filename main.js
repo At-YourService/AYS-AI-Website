@@ -293,9 +293,14 @@ async function loadContent(type) {
 
     const validItems = items.filter(i => i !== null);
     if (validItems.length === 0) {
-      grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">Geen ${type} gevonden.</p>`;
+      grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">${state.lang === 'nl' ? `Geen ${type} gevonden.` : `No ${type} found.`}</p>`;
       return;
     }
+
+    const readMoreLabel   = state.lang === 'nl' ? 'Lees meer'        : 'Read more';
+    const vacancyLabel    = state.lang === 'nl' ? 'Bekijk vacature'  : 'View vacancy';
+    const fallbackNews    = state.lang === 'nl' ? 'Lees meer over dit onderwerp.' : 'Read more about this topic.';
+    const fallbackVacancy = state.lang === 'nl' ? 'Bekijk deze vacature.'         : 'View this vacancy.';
 
     grid.innerHTML = validItems
       .map(item => `
@@ -317,9 +322,9 @@ async function loadContent(type) {
                     <span class="blog-category">${item.category}</span>
                 </div>` : ''}
                 <h3 class="blog-title">${item.title}</h3>
-                <p class="blog-excerpt">${item.excerpt || (type === 'news' ? 'Lees meer over dit onderwerp.' : 'Bekijk deze vacature.')}</p>
+                <p class="blog-excerpt">${item.excerpt || (type === 'jobs' ? fallbackVacancy : fallbackNews)}</p>
                 <a href="post.html?type=${type}&file=${item.file}" class="blog-link">
-                    ${type === 'news' || type === 'events' ? 'Lees meer' : 'Bekijk vacature'} <i data-lucide="arrow-right"></i>
+                    ${type === 'jobs' ? vacancyLabel : readMoreLabel} <i data-lucide="arrow-right"></i>
                 </a>
             </div>
         </article>
