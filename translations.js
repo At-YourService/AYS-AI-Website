@@ -4,6 +4,7 @@ export const translations = {
   "nav.services": { nl: "Diensten", en: "Services" },
   "nav.partners": { nl: "Partners", en: "Partners" },
   "nav.contact": { nl: "Contact", en: "Contact" },
+  "nav.news": { nl: "News", en: "News" },
   "events.badge": { nl: "COMMUNITY & INSIGHTS", en: "COMMUNITY & INSIGHTS" },
   "events.title": { nl: "Onze", en: "Our" },
   "events.highlight": { nl: "Events.", en: "Events." },
@@ -91,6 +92,25 @@ export const translations = {
   "footer.col.collab": { nl: "In collab with", en: "In collab with" },
   "footer.col.socials": { nl: "Socials", en: "Socials" },
   "footer.copyright": { nl: "© 2026 at your service. All rights reserved.", en: "© 2026 at your service. All rights reserved." },
+
+  // Contact page
+  "contact.badge":       { nl: "NEEM CONTACT OP", en: "GET IN TOUCH" },
+  "contact.title":       { nl: "Stuur ons", en: "Send us" },
+  "contact.highlight":   { nl: "een bericht.", en: "a message." },
+  "contact.subtitle":    { nl: "Klaar om uw AI-project te starten? Vul het formulier in en we nemen snel contact op.", en: "Ready to start your AI project? Fill in the form and we'll get back to you shortly." },
+  "contact.info.label":  { nl: "CONTACTGEGEVENS", en: "CONTACT DETAILS" },
+  "contact.info.title":  { nl: "Wij helpen u graag.", en: "We're happy to help." },
+  "contact.info.text":   { nl: "Heeft u een vraag, een project of wilt u gewoon kennis maken? Stuur ons een bericht of neem rechtstreeks contact op.", en: "Have a question, a project idea, or just want to connect? Send us a message or reach out directly." },
+  "contact.form.name":         { nl: "Naam", en: "Name" },
+  "contact.form.email":        { nl: "E-mailadres", en: "Email address" },
+  "contact.form.message":      { nl: "Bericht", en: "Message" },
+  "contact.form.privacy":      { nl: "Ik ga akkoord met het", en: "I agree with the" },
+  "contact.form.privacy.link": { nl: "privacybeleid", en: "privacy policy" },
+  "contact.form.submit":       { nl: "Verstuur bericht", en: "Send message" },
+  "contact.success.title": { nl: "Bericht verzonden!", en: "Message sent!" },
+  "contact.success.text":  { nl: "We nemen zo snel mogelijk contact met u op.", en: "We'll get back to you as soon as possible." },
+  "contact.error.title": { nl: "Er is iets misgegaan.", en: "Something went wrong." },
+  "contact.error.text":  { nl: "Probeer het opnieuw of mail ons rechtstreeks.", en: "Please try again or email us directly." },
 
   // Cookie Banner
   "cookie.text": { nl: "Wij gebruiken cookies om uw ervaring te verbeteren.", en: "We use cookies to enhance your experience." },

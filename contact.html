@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Neem contact op met at your service. Wij helpen u graag verder met uw AI-strategie en implementatie." />
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self';" />
+    <title>Contact | at your service</title>
+    <link rel="stylesheet" href="./style.css" />
+    <style>
+        body {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        body.loaded {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="news-page">
+    <!-- Header -->
+    <header id="main-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">
+                <img src="./At-your-service-LOGO_KLEUR.png" alt="at your service Logo" />
+            </a>
+            <nav class="desktop-nav">
+                <a href="index.html#method" data-i18n="nav.method">Aanpak</a>
+                <a href="index.html#services" data-i18n="nav.services">Diensten</a>
+                <a href="events.html" data-i18n="nav.events">Events</a>
+                <a href="jobs.html" data-i18n="nav.jobs">Jobs</a>
+                <a href="index.html#partners" data-i18n="nav.partners">Partners</a>
+                <a href="contact.html" class="active" data-i18n="nav.contact">Contact</a>
+            </nav>
+            <div class="header-actions">
+                <div class="lang-switcher">
+                    <button class="lang-text-btn active" data-lang="nl">NL</button>
+                    <span class="lang-sep">/</span>
+                    <button class="lang-text-btn" data-lang="en">EN</button>
+                </div>
+                <a href="contact.html" class="btn btn-sm btn-dark active" data-i18n="nav.contact">Contact</a>
+                <button class="mobile-menu-btn" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <nav class="mobile-nav">
+        <div class="mobile-nav-logo">
+            <img src="./At-your-service-LOGO_WIT.png" alt="at your service" />
+        </div>
+        <div class="mobile-nav-links">
+            <a href="index.html#method" data-i18n="nav.method">Aanpak</a>
+            <a href="index.html#services" data-i18n="nav.services">Diensten</a>
+            <a href="events.html" data-i18n="nav.events">Events</a>
+            <a href="jobs.html" data-i18n="nav.jobs">Jobs</a>
+            <a href="index.html#partners" data-i18n="nav.partners">Partners</a>
+            <a href="contact.html" class="active" data-i18n="nav.contact">Contact</a>
+        </div>
+        <div class="mobile-nav-lang">
+            <button class="lang-text-btn active" data-lang="nl">NL</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-text-btn" data-lang="en">EN</button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="section-card hero-section news-hero">
+            <div class="hero-bg">
+                <div class="hero-gradient"></div>
+                <div class="hero-grid"></div>
+            </div>
+            <div class="container hero-container"
+                style="align-items: center; text-align: center; grid-template-columns: 1fr;">
+                <div class="hero-content">
+                    <div class="hero-badge" data-i18n="contact.badge">NEEM CONTACT OP</div>
+                    <h1 class="hero-title">
+                        <span class="line" data-i18n="contact.title">Stuur ons</span>
+                        <span class="line"><span class="highlight" data-i18n="contact.highlight">een bericht.</span></span>
+                    </h1>
+                    <p class="hero-subtitle" style="margin: 0 auto; max-width: 600px;" data-i18n="contact.subtitle">
+                        Klaar om uw AI-project te starten? Vul het formulier in en we nemen snel contact op.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="section-card light-section contact-section">
+            <div class="container">
+                <div class="contact-grid">
+
+                    <!-- Left: Contact Info -->
+                    <div class="contact-info">
+                        <span class="label-pill" data-i18n="contact.info.label">CONTACTGEGEVENS</span>
+                        <h2 data-i18n="contact.info.title">Wij helpen u graag.</h2>
+                        <p data-i18n="contact.info.text">
+                            Heeft u een vraag, een project of wilt u gewoon kennis maken? Stuur ons een bericht of neem rechtstreeks contact op.
+                        </p>
+                        <div class="contact-details">
+                            <div class="contact-detail-item">
+                                <i data-lucide="mail"></i>
+                                <a href="#" class="email-protect" data-show-email="true">...</a>
+                            </div>
+                            <div class="contact-detail-item">
+                                <i data-lucide="phone"></i>
+                                <a href="tel:+3234508030">+32 3 450 80 30</a>
+                            </div>
+                            <div class="contact-detail-item">
+                                <i data-lucide="map-pin"></i>
+                                <div>
+                                    <p>Veldkant 33A</p>
+                                    <p>2550 Kontich, Belgium</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Form -->
+                    <div class="contact-form-wrap">
+                        <!-- Success message -->
+                        <div id="form-success" class="form-message form-success hidden">
+                            <i data-lucide="check-circle"></i>
+                            <h3 data-i18n="contact.success.title">Bericht verzonden!</h3>
+                            <p data-i18n="contact.success.text">We nemen zo snel mogelijk contact met u op.</p>
+                        </div>
+
+                        <!-- Server error message -->
+                        <div id="form-error" class="form-message form-error-msg hidden">
+                            <i data-lucide="alert-circle"></i>
+                            <h3 data-i18n="contact.error.title">Er is iets misgegaan.</h3>
+                            <p id="form-error-detail" data-i18n="contact.error.text">Probeer het opnieuw of mail ons rechtstreeks.</p>
+                        </div>
+
+                        <form id="contact-form" action="sendmail.php" method="POST" novalidate>
+                            <!-- Honeypot: hidden from users, visible to bots -->
+                            <div class="form-honeypot" aria-hidden="true">
+                                <input type="text" name="website" tabindex="-1" autocomplete="off">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name" data-i18n="contact.form.name">Naam <span class="required-star">*</span></label>
+                                <input type="text" id="name" name="name" required
+                                    minlength="2" maxlength="100"
+                                    placeholder="Uw naam"
+                                    data-placeholder-nl="Uw naam"
+                                    data-placeholder-en="Your name">
+                                <span class="form-error" id="name-error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" data-i18n="contact.form.email">E-mailadres <span class="required-star">*</span></label>
+                                <input type="email" id="email" name="email" required
+                                    placeholder="uw@email.com"
+                                    data-placeholder-nl="uw@email.com"
+                                    data-placeholder-en="your@email.com">
+                                <span class="form-error" id="email-error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message" data-i18n="contact.form.message">Bericht <span class="required-star">*</span></label>
+                                <textarea id="message" name="message" required
+                                    minlength="10" maxlength="5000" rows="6"
+                                    placeholder="Uw bericht..."
+                                    data-placeholder-nl="Uw bericht..."
+                                    data-placeholder-en="Your message..."></textarea>
+                                <span class="form-error" id="message-error"></span>
+                            </div>
+
+                            <div class="form-group form-checkbox-group">
+                                <div class="checkbox-row">
+                                    <input type="checkbox" id="privacy" name="privacy" required>
+                                    <label for="privacy" class="checkbox-label">
+                                        <span data-i18n="contact.form.privacy">Ik ga akkoord met het</span>
+                                    </label>
+                                    <a href="privacy.html" class="privacy-link" data-i18n="contact.form.privacy.link" target="_blank" rel="noopener noreferrer">privacybeleid</a>
+                                    <span class="required-star">*</span>
+                                </div>
+                                <span class="form-error" id="privacy-error"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-lg btn-primary" id="form-submit">
+                                <span id="btn-label" data-i18n="contact.form.submit">Verstuur bericht</span>
+                                <i data-lucide="send" id="btn-icon"></i>
+                                <i data-lucide="loader" id="btn-loading" style="display:none;"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Section -->
+        <section id="contact-footer" class="section-card footer-cta">
+            <footer class="main-footer">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <h5 data-i18n="footer.col.contact">Contact</h5>
+                        <a href="#" class="email-protect" data-show-email="true">...</a>
+                        <p>Veldkant 33A, 2550 Kontich</p>
+                        <p>Belgium</p>
+                        <p>Phone: +32 3 450 80 30</p>
+                    </div>
+                    <div class="footer-col">
+                        <h5 data-i18n="footer.col.menu">Menu</h5>
+                        <a href="index.html#method" data-i18n="nav.method">Aanpak</a>
+                        <a href="index.html#services" data-i18n="nav.services">Diensten</a>
+                        <a href="events.html" data-i18n="nav.events">Events</a>
+                        <a href="jobs.html" data-i18n="nav.jobs">Jobs</a>
+                        <a href="index.html#partners" data-i18n="nav.partners">Partners</a>
+                    </div>
+                    <div class="footer-col footer-collab">
+                        <h5 data-i18n="footer.col.collab">In collab with</h5>
+                        <a href="https://www.konato.be/" target="_blank" rel="noopener noreferrer">
+                            <img src="./Konato.png" alt="Konato" class="footer-logo large bg-white">
+                        </a>
+                        <a href="https://www.9yards.be/" target="_blank" rel="noopener noreferrer">
+                            <img src="./9yards.png" alt="9Yards" class="footer-logo large">
+                        </a>
+                        <a href="https://www.biq.be/" target="_blank" rel="noopener noreferrer">
+                            <img src="./biq.png" alt="BIQ" class="footer-logo large">
+                        </a>
+                    </div>
+                    <div class="footer-col footer-socials">
+                        <h5 data-i18n="footer.col.socials">Socials</h5>
+                        <a href="https://www.linkedin.com/company/atyourservice-ai/" target="_blank"
+                            rel="noopener noreferrer">
+                            <img src="./InBug.jpg" alt="LinkedIn" style="height: 34px;">
+                        </a>
+                    </div>
+                    <div class="footer-col copyright">
+                        <div class="copyright-wrapper">
+                            <span data-i18n="footer.copyright">© 2026 at your service. All rights reserved.</span>
+                            <nav class="copyright-links">
+                                <a href="privacy.html" data-i18n="cookie.privacy">Privacybeleid</a>
+                                <a href="cookies.html" data-i18n="cookie.policy">Cookiebeleid</a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </section>
+
+    </main>
+
+    <!-- Cookie Banner -->
+    <div id="cookie-banner" class="cookie-banner hidden">
+        <p data-i18n="cookie.text">Wij gebruiken cookies om uw ervaring te verbeteren.</p>
+        <div class="cookie-actions">
+            <button id="cookie-accept" class="btn btn-sm btn-dark" data-i18n="cookie.accept">Accepteren</button>
+            <button id="cookie-decline" class="btn btn-sm btn-outline" data-i18n="cookie.decline">Weigeren</button>
+        </div>
+        <div class="cookie-links">
+            <a href="privacy.html" data-i18n="cookie.privacy">Privacybeleid</a>
+            <a href="cookies.html" data-i18n="cookie.policy">Cookiebeleid</a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"
+        integrity="sha384-ya5H3qW3+3RDNSEr5WdyPLPQk7Nl3r0nqEKvOJSGEqKL3yLhVvRRHrVCWnqnLHnz"
+        crossorigin="anonymous"></script>
+    <script type="module" src="./main.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+            lucide.createIcons();
+        });
+    </script>
+    <script>
+        // Email Protection Script
+        (function () {
+            function protectEmail() {
+                const user = 'info';
+                const domain = 'at-yourservice.ai';
+                const email = user + '@' + domain;
+                const elements = document.querySelectorAll('.email-protect');
+                for (var i = 0; i < elements.length; i++) {
+                    var el = elements[i];
+                    el.href = 'mailto:' + email;
+                    if (el.getAttribute('data-show-email') === 'true') {
+                        el.innerText = email;
+                    }
+                }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', protectEmail);
+            } else {
+                protectEmail();
+            }
+        })();
+    </script>
+    <script>
+        // Contact form: AJAX submission + client-side validation
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('contact-form');
+            if (!form) return;
+
+            // Update input placeholders when language changes
+            function updatePlaceholders() {
+                const lang = localStorage.getItem('language') || 'nl';
+                document.querySelectorAll('[data-placeholder-' + lang + ']').forEach(function (el) {
+                    el.placeholder = el.getAttribute('data-placeholder-' + lang);
+                });
+            }
+
+            // Observe language button clicks to update placeholders
+            document.querySelectorAll('.lang-text-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    setTimeout(updatePlaceholders, 50);
+                });
+            });
+            updatePlaceholders();
+
+            // Handle form submission
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                clearErrors();
+
+                const lang = localStorage.getItem('language') || 'nl';
+                if (!validateForm(lang)) return;
+
+                const submitBtn = document.getElementById('form-submit');
+                const btnLabel = document.getElementById('btn-label');
+                const btnIcon = document.getElementById('btn-icon');
+                const btnLoading = document.getElementById('btn-loading');
+
+                submitBtn.disabled = true;
+                btnLabel.textContent = lang === 'en' ? 'Sending...' : 'Verzenden...';
+                if (btnIcon) btnIcon.style.display = 'none';
+                if (btnLoading) btnLoading.style.display = '';
+                lucide.createIcons();
+
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch('sendmail.php', {
+                        method: 'POST',
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                        body: formData
+                    });
+
+                    if (!response.ok) throw new Error('Network error');
+                    const data = await response.json();
+
+                    if (data.success) {
+                        form.style.display = 'none';
+                        document.getElementById('form-success').classList.remove('hidden');
+                        document.getElementById('form-error').classList.add('hidden');
+                    } else {
+                        const errDetail = document.getElementById('form-error-detail');
+                        if (errDetail && data.message) errDetail.textContent = data.message;
+                        document.getElementById('form-error').classList.remove('hidden');
+                    }
+                } catch (err) {
+                    document.getElementById('form-error').classList.remove('hidden');
+                } finally {
+                    submitBtn.disabled = false;
+                    btnLabel.textContent = lang === 'en' ? 'Send message' : 'Verstuur bericht';
+                    if (btnIcon) btnIcon.style.display = '';
+                    if (btnLoading) btnLoading.style.display = 'none';
+                    lucide.createIcons();
+                }
+            });
+
+            function clearErrors() {
+                document.querySelectorAll('.form-error').forEach(function (el) {
+                    el.textContent = '';
+                    el.classList.remove('visible');
+                });
+                document.querySelectorAll('#contact-form input, #contact-form textarea').forEach(function (el) {
+                    el.classList.remove('invalid');
+                });
+                document.getElementById('form-error').classList.add('hidden');
+            }
+
+            function validateForm(lang) {
+                var valid = true;
+                var isEn = lang === 'en';
+
+                var name = document.getElementById('name');
+                var email = document.getElementById('email');
+                var message = document.getElementById('message');
+                var privacy = document.getElementById('privacy');
+
+                if (!name.value.trim() || name.value.trim().length < 2) {
+                    showFieldError('name-error', name, isEn ? 'Please enter your name.' : 'Vul uw naam in.');
+                    valid = false;
+                }
+                if (!email.value.trim() || !isValidEmail(email.value.trim())) {
+                    showFieldError('email-error', email, isEn ? 'Please enter a valid email address.' : 'Vul een geldig e-mailadres in.');
+                    valid = false;
+                }
+                if (!message.value.trim() || message.value.trim().length < 10) {
+                    showFieldError('message-error', message, isEn ? 'Please enter a message (min. 10 characters).' : 'Vul een bericht in (min. 10 tekens).');
+                    valid = false;
+                }
+                if (!privacy.checked) {
+                    showFieldError('privacy-error', null, isEn ? 'Please accept the privacy policy.' : 'Accepteer het privacybeleid om verder te gaan.');
+                    valid = false;
+                }
+                return valid;
+            }
+
+            function showFieldError(errorId, input, msg) {
+                var el = document.getElementById(errorId);
+                if (el) { el.textContent = msg; el.classList.add('visible'); }
+                if (input) input.classList.add('invalid');
+            }
+
+            function isValidEmail(val) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+            }
+        });
+    </script>
+</body>
+
+</html>
