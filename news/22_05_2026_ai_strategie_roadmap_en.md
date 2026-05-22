@@ -2,6 +2,7 @@
 title: How to build an AI strategy and roadmap
 category: Insights
 excerpt: An AI strategy is more than a plan — it's the foundation for real value creation. Discover how to build a strong AI roadmap in three steps and which success factors make the difference.
+date: 22 May 2026
 image: ./images/ai_strategie_roadmap.png
 ---
 

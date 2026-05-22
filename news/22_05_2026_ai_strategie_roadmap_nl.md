@@ -2,6 +2,7 @@
 title: Hoe bouw je een AI-strategie en roadmap?
 category: Insights
 excerpt: Een AI-strategie is meer dan een plan — het is de basis voor echte waardecreatie. Ontdek hoe je in drie stappen een sterke AI-roadmap opbouwt en welke succesfactoren het verschil maken.
+date: 22 Mei 2026
 image: ./images/ai_strategie_roadmap.png
 ---
 

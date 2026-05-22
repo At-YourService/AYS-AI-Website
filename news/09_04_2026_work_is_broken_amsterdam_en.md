@@ -2,7 +2,7 @@
 title: Work Is Broken. Unlocking Human Agency — Amsterdam
 category: Insights
 excerpt: As an official DevRev partner we joined 'Work Is Broken. Unlocking Human Agency' in Amsterdam — an afternoon of honest, high-depth conversations about AI, architecture and human leadership.
-date: 09_04_2026
+date: 9 April 2026
 image: ./images/work_is_broken_amsterdam.jpg
 ---
 
