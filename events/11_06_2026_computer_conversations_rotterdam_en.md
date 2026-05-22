@@ -33,7 +33,7 @@ Time: 12:00 PM – 6:00 PM, including lunch & drinks
 
 Location: Van Nelle Factory, Van Nelleweg, 3044 BC Rotterdam, Netherlands
 
-Register at: https://luma.com/Computer-Conversations-Rotterdam
+Register at: https://luma.com/Computer-Conversations-Rotterdam?utm_campaign=lc_ams&utm_source=konato
 
 <!--
 seo_title: Computer Conversations Rotterdam — At Your Service

@@ -33,7 +33,7 @@ Tijd: 12:00 – 18:00, inclusief lunch & drankjes
 
 Locatie: Van Nelle Fabriek, Van Nelleweg, 3044 BC Rotterdam
 
-Inschrijven via: https://luma.com/Computer-Conversations-Rotterdam
+Inschrijven via: https://luma.com/Computer-Conversations-Rotterdam?utm_campaign=lc_ams&utm_source=konato
 
 <!--
 seo_title: Computer Conversations Rotterdam — At Your Service
