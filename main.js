@@ -60,6 +60,12 @@ function setLanguage(lang) {
   if (state.cookieConsent === 'accepted') {
     localStorage.setItem('lang', lang);
   }
+
+  // Reload language-dependent content
+  if (document.getElementById('blog-grid')) loadContent('news');
+  if (document.getElementById('events-grid')) loadContent('events');
+  if (document.getElementById('jobs-grid')) loadContent('jobs');
+  if (document.getElementById('post-body-container')) initPostDetail();
 }
 
 // Remove toggleLanguage(), replace with specific listeners
@@ -191,6 +197,17 @@ function closeMobileMenu() {
   }
 }
 
+// --- LOCALIZATION HELPER ---
+async function resolveLocalizedFile(folder, filename, lang) {
+  if (lang === 'nl') return filename;
+  const localizedFilename = filename.replace(/\.md$/, `.${lang}.md`);
+  try {
+    const res = await fetch(`${folder}/${localizedFilename}`, { method: 'HEAD' });
+    if (res.ok) return localizedFilename;
+  } catch (e) {}
+  return filename;
+}
+
 // --- CONTENT LOADING LOGIC (News & Jobs) ---
 async function loadContent(type) {
   const gridId = type === 'news' ? 'blog-grid' : (type === 'events' ? 'events-grid' : 'jobs-grid');
@@ -210,7 +227,8 @@ async function loadContent(type) {
 
     const items = await Promise.all(files.map(async (file) => {
       try {
-        const res = await fetch(`${folder}/${file}`);
+        const localizedFile = await resolveLocalizedFile(folder, file, state.lang);
+        const res = await fetch(`${folder}/${localizedFile}`);
         if (!res.ok) {
           console.warn(`[ContentLoader] Failed to fetch ${file}: ${res.status}`);
           return null;
@@ -338,7 +356,8 @@ async function initPostDetail() {
   }
 
   try {
-    const fetchPath = `./${type}/${file}`;
+    const localizedFile = await resolveLocalizedFile(`./${type}`, file, state.lang);
+    const fetchPath = `./${type}/${localizedFile}`;
     console.log(`[PostDetail] Fetching content from: ${fetchPath}`);
     const response = await fetch(fetchPath);
     if (!response.ok) throw new Error(`Could not load content from ${fetchPath} (Status: ${response.status})`);
