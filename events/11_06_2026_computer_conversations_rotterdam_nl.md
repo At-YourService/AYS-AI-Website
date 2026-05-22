@@ -20,7 +20,7 @@ Wat je gaat doen
 
 Dit is een hands-on, collaboratieve sessie waarbij je:
 
-- **Computer ontmoet** – Kennismaking met jouw AI-teamgenoot via een live demo
+- **Meet Computer** – Kennismaking met jouw AI-teamgenoot via een live demo
 
 - **Een agentische workflow bouwt** – Maak en personaliseer een workflow op maat van jouw omgeving
 
