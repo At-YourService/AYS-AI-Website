@@ -241,7 +241,7 @@ async function loadContent(type) {
                 if (key === 'category') category = value;
                 if (key === 'excerpt') excerpt = value;
                 if (key === 'date') dateText = value;
-                if (key === 'image') image = value;
+                if (key === 'image') image = value.startsWith('./') ? `${folder}/${value.slice(2)}` : value;
               }
             });
           }
