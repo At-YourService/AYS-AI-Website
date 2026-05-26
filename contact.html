@@ -342,7 +342,6 @@
                 btnLabel.textContent = lang === 'en' ? 'Sending...' : 'Verzenden...';
                 if (btnIcon) btnIcon.style.display = 'none';
                 if (btnLoading) btnLoading.style.display = '';
-                lucide.createIcons();
 
                 try {
                     const formData = new FormData(form);
@@ -371,7 +370,6 @@
                     btnLabel.textContent = lang === 'en' ? 'Send message' : 'Verstuur bericht';
                     if (btnIcon) btnIcon.style.display = '';
                     if (btnLoading) btnLoading.style.display = 'none';
-                    lucide.createIcons();
                 }
             });
 
