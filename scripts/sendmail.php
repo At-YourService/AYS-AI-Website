@@ -251,6 +251,7 @@ $payload = [
     'title'           => 'Contact form submission from ' . $name,
     'body'            => $email . "\n\n" . $name . " wrote:\n\n" . $message,
     'applies_to_part' => $part_id,
+    'needs_response'  => true,
 ];
 
 if ($rev_user_id !== null) {
