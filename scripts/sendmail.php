@@ -83,6 +83,64 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(false, 'Method not allowed.', $is_ajax);
 }
 
+// ── Origin check ───────────────────────────────────────────────────────────
+// Block requests that carry an Origin header from a different host.
+// Legitimate browser submissions from at-yourservice.ai will always pass.
+$origin       = $_SERVER['HTTP_ORIGIN'] ?? '';
+$allowed_host = 'at-yourservice.ai';
+if ($origin !== '' && strpos($origin, $allowed_host) === false) {
+    log_msg('blocked: bad origin "' . $origin . '"');
+    http_response_code(403);
+    exit(json_encode(['success' => false, 'message' => 'Forbidden.']));
+}
+
+// ── Rate limiting — max 5 submissions per IP per hour ─────────────────────
+function check_rate_limit(string $ip, int $max = 5, int $window = 3600): bool
+{
+    $file = sys_get_temp_dir() . '/ays_contact_rl.json';
+    $now  = time();
+
+    $fh = @fopen($file, 'c+');
+    if (!$fh) return true; // fail open if file can't be created
+
+    if (!flock($fh, LOCK_EX)) { fclose($fh); return true; }
+
+    $content = stream_get_contents($fh);
+    $data    = ($content !== '' && $content !== false)
+               ? (json_decode($content, true) ?? []) : [];
+
+    // Purge entries outside the current window
+    foreach ($data as $key => $entry) {
+        if ($now - $entry['t'] >= $window) unset($data[$key]);
+    }
+
+    $entry = $data[$ip] ?? ['c' => 0, 't' => $now];
+    if ($now - $entry['t'] >= $window) {
+        $entry = ['c' => 0, 't' => $now]; // reset if window has rolled over
+    }
+    $entry['c']++;
+    $data[$ip] = $entry;
+    $allowed   = $entry['c'] <= $max;
+
+    ftruncate($fh, 0);
+    rewind($fh);
+    fwrite($fh, json_encode($data));
+    flock($fh, LOCK_UN);
+    fclose($fh);
+
+    return $allowed;
+}
+
+$ip = isset($_SERVER['HTTP_X_FORWARDED_FOR'])
+    ? trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0])
+    : ($_SERVER['REMOTE_ADDR'] ?? '0.0.0.0');
+
+if (!check_rate_limit($ip)) {
+    log_msg('rate limited: ' . $ip);
+    http_response_code(429);
+    exit(json_encode(['success' => false, 'message' => 'Te veel pogingen. Probeer het later opnieuw.']));
+}
+
 // ── Honeypot ───────────────────────────────────────────────────────────────
 if (!empty($_POST['website'])) {
     respond(true, 'Message sent.', $is_ajax); // silent discard for bots
