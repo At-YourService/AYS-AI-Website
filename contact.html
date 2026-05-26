@@ -144,7 +144,7 @@
                             <p id="form-error-detail" data-i18n="contact.error.text">Probeer het opnieuw of mail ons rechtstreeks.</p>
                         </div>
 
-                        <form id="contact-form" action="sendmail.php" method="POST" novalidate>
+                        <form id="contact-form" action="scripts/sendmail.php" method="POST" novalidate>
                             <!-- Honeypot: hidden from users, visible to bots -->
                             <div class="form-honeypot" aria-hidden="true">
                                 <input type="text" name="website" tabindex="-1" autocomplete="off">
@@ -345,7 +345,7 @@
 
                 try {
                     const formData = new FormData(form);
-                    const response = await fetch('sendmail.php', {
+                    const response = await fetch('scripts/sendmail.php', {
                         method: 'POST',
                         headers: { 'X-Requested-With': 'XMLHttpRequest' },
                         body: formData
