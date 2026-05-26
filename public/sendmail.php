@@ -24,6 +24,12 @@
  *       DEVREV_PART_ID=don:core:dvrv-eu-1:devo/xxxx:product/2
  */
 
+// ── Logging ────────────────────────────────────────────────────────────────
+function log_msg(string $msg): void
+{
+    error_log('[' . date('Y-m-d H:i:s') . '] ' . $msg);
+}
+
 // ── Load config from .env ──────────────────────────────────────────────────
 $env_file = __DIR__ . '/../../.env';    // preferred: outside webroot on OVHCloud
 if (!file_exists($env_file)) {
@@ -153,12 +159,12 @@ $lookup = devrev_request(
 );
 
 if ($lookup['curl_error']) {
-    error_log('[sendmail] rev-users.list cURL error: ' . $lookup['curl_error']);
+    log_msg('[sendmail] rev-users.list cURL error: ' . $lookup['curl_error']);
 } elseif ($lookup['status'] === 200) {
     $rev_users   = $lookup['body']['rev_users'] ?? [];
     $rev_user_id = !empty($rev_users) ? ($rev_users[0]['id'] ?? null) : null;
 } else {
-    error_log('[sendmail] rev-users.list unexpected HTTP ' . $lookup['status'] . ': ' . json_encode($lookup['body']));
+    log_msg('[sendmail] rev-users.list unexpected HTTP ' . $lookup['status'] . ': ' . json_encode($lookup['body']));
 }
 
 // ── Step 2: Create DevRev ticket ───────────────────────────────────────────
@@ -188,6 +194,6 @@ $ticket_ok = !$ticket['curl_error']
 if ($ticket_ok) {
     respond(true, 'Uw bericht is succesvol verzonden.', $is_ajax);
 } else {
-    error_log('[sendmail] works.create failed — HTTP ' . $ticket['status'] . ': ' . json_encode($ticket['body']) . ' | cURL: ' . $ticket['curl_error']);
+    log_msg('[sendmail] works.create failed — HTTP ' . $ticket['status'] . ': ' . json_encode($ticket['body']) . ' | cURL: ' . $ticket['curl_error']);
     respond(false, 'Verzenden mislukt. Probeer het opnieuw of mail ons rechtstreeks.', $is_ajax);
 }
