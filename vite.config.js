@@ -1,7 +1,28 @@
 import { defineConfig } from 'vite';
+import { readdirSync, copyFileSync, mkdirSync } from 'fs';
+import { join } from 'path';
+
+// Copies the root scripts/ folder into dist/scripts/ after each build.
+// This keeps server-side PHP scripts out of public/ while still deploying them.
+function copyScriptsPlugin() {
+  return {
+    name: 'copy-scripts',
+    closeBundle() {
+      const src  = join(__dirname, 'scripts');
+      const dest = join(__dirname, 'dist', 'scripts');
+      mkdirSync(dest, { recursive: true });
+      for (const file of readdirSync(src)) {
+        copyFileSync(join(src, file), join(dest, file));
+        console.log(`[copy-scripts] ${file} → dist/scripts/${file}`);
+      }
+    },
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  plugins: [copyScriptsPlugin()],
+
   // Set base path based on deployment target
   // GitHub Pages: /AYS-AI-Website/
   // OVHCloud: /
