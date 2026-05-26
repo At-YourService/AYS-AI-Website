@@ -159,12 +159,32 @@ $lookup = devrev_request(
 );
 
 if ($lookup['curl_error']) {
-    log_msg('[sendmail] rev-users.list cURL error: ' . $lookup['curl_error']);
+    log_msg('rev-users.list cURL error: ' . $lookup['curl_error']);
 } elseif ($lookup['status'] === 200) {
     $rev_users   = $lookup['body']['rev_users'] ?? [];
     $rev_user_id = !empty($rev_users) ? ($rev_users[0]['id'] ?? null) : null;
 } else {
-    log_msg('[sendmail] rev-users.list unexpected HTTP ' . $lookup['status'] . ': ' . json_encode($lookup['body']));
+    log_msg('rev-users.list unexpected HTTP ' . $lookup['status'] . ': ' . json_encode($lookup['body']));
+}
+
+// ── Step 1b: Create rev-user if not found ──────────────────────────────────
+if ($rev_user_id === null) {
+    $create = devrev_request(
+        'POST',
+        'https://api.devrev.ai/rev-users.create',
+        [
+            'email'        => $email,
+            'display_name' => $name,
+        ],
+        $api_key
+    );
+
+    if (!$create['curl_error'] && $create['status'] >= 200 && $create['status'] < 300) {
+        $rev_user_id = $create['body']['rev_user']['id'] ?? null;
+        log_msg('rev-user created: ' . $rev_user_id . ' for ' . $email);
+    } else {
+        log_msg('rev-users.create failed — HTTP ' . $create['status'] . ': ' . json_encode($create['body']) . ' | cURL: ' . $create['curl_error']);
+    }
 }
 
 // ── Step 2: Create DevRev ticket ───────────────────────────────────────────
