@@ -1,30 +1,33 @@
 <?php
 /**
- * Contact form mail handler — MailerSend API
+ * Contact form handler — DevRev API
+ *
+ * Flow
+ * ────
+ * 1. Validate submitted form fields.
+ * 2. Look up the submitter in DevRev as a rev-user (by e-mail).
+ * 3. Create a DevRev ticket, linking the rev-user when found.
  *
  * Setup
  * ─────
- * 1. Create a free account at https://www.mailersend.com
- * 2. Verify your sending domain (at-yourservice.ai) by adding the DNS records
- *    MailerSend provides (SPF, DKIM) — takes ~10 minutes in OVHCloud DNS manager
- * 3. Generate an API token: MailerSend dashboard → API Tokens → Generate
- * 4. On OVHCloud: create a file named .env ONE level above your www/ webroot:
+ * 1. Generate a DevRev PAT (Personal Access Token) or service-account token
+ *    in your DevRev org: Settings → Security → Access tokens
+ * 2. Find your part ID: open the part in DevRev and copy its DON from the URL
+ *    (e.g. don:core:dvrv-eu-1:devo/xxxx:product/2)
+ * 3. On OVHCloud: create .env ONE level above your www/ webroot (never inside):
  *
  *       /home/your-account/.env          ← not publicly accessible
  *       /home/your-account/www/          ← webroot
  *
  *    .env contents:
- *       MAILERSEND_API_KEY=mlsn.xxxxxxxxxxxxxxxx
- *
- * 5. Copy .env.example to .env and fill in your key (never commit .env itself)
+ *       DEVREV_API_KEY=your_token_here
+ *       DEVREV_PART_ID=don:core:dvrv-eu-1:devo/xxxx:product/2
  */
 
-// ── Load API key from .env outside the webroot ─────────────────────────────
-$env_file = __DIR__ . '/../../.env'; // one level above www/ on OVHCloud
-
+// ── Load config from .env ──────────────────────────────────────────────────
+$env_file = __DIR__ . '/../../.env';    // preferred: outside webroot on OVHCloud
 if (!file_exists($env_file)) {
-    // Fallback: .env next to this file (useful during local development)
-    $env_file = __DIR__ . '/.env';
+    $env_file = __DIR__ . '/.env';      // fallback: next to this file (local dev)
 }
 
 if (!file_exists($env_file)) {
@@ -32,19 +35,22 @@ if (!file_exists($env_file)) {
     exit(json_encode(['success' => false, 'message' => 'Server configuration error.']));
 }
 
-$env     = parse_ini_file($env_file);
-$api_key = $env['MAILERSEND_API_KEY'] ?? '';
+// parse_ini_file() chokes on parentheses/special chars in comments, so parse manually
+$env = [];
+foreach (file($env_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+    $line = trim($line);
+    if ($line === '' || $line[0] === '#') continue;
+    $pos = strpos($line, '=');
+    if ($pos === false) continue;
+    $env[trim(substr($line, 0, $pos))] = trim(substr($line, $pos + 1));
+}
+$api_key = $env['DEVREV_API_KEY'] ?? '';
+$part_id = $env['DEVREV_PART_ID'] ?? '';
 
-if (empty($api_key)) {
+if (empty($api_key) || empty($part_id)) {
     http_response_code(500);
     exit(json_encode(['success' => false, 'message' => 'Server configuration error.']));
 }
-
-// ── Configuration ──────────────────────────────────────────────────────────
-$recipient_email = 'info@at-yourservice.ai';
-$recipient_name  = 'at your service';
-$from_email      = 'noreply@at-yourservice.ai'; // must be on your verified MailerSend domain
-$from_name       = 'at your service website';
 
 // ── Security headers ───────────────────────────────────────────────────────
 header('X-Content-Type-Options: nosniff');
@@ -73,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // ── Honeypot ───────────────────────────────────────────────────────────────
 if (!empty($_POST['website'])) {
-    respond(true, 'Message sent.', $is_ajax); // silent discard
+    respond(true, 'Message sent.', $is_ajax); // silent discard for bots
 }
 
 // ── Sanitise inputs ────────────────────────────────────────────────────────
@@ -102,54 +108,83 @@ if (!empty($errors)) {
     respond(false, implode(' ', $errors), $is_ajax);
 }
 
-// ── Build MailerSend payload ───────────────────────────────────────────────
-$payload = [
-    'from' => [
-        'email' => $from_email,
-        'name'  => $from_name,
-    ],
-    'to' => [
-        [
-            'email' => $recipient_email,
-            'name'  => $recipient_name,
+// ── Helper: DevRev API request ─────────────────────────────────────────────
+function devrev_request(string $method, string $url, array $payload, string $api_key): array
+{
+    $ch = curl_init($url);
+
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 15,
+        CURLOPT_HTTPHEADER     => [
+            'Content-Type: application/json',
+            'Accept: application/json',
+            'Authorization: Bearer ' . $api_key,
         ],
-    ],
-    'reply_to' => [
-        'email' => $email,
-        'name'  => $name,
-    ],
-    'subject' => 'Nieuw contactformulier: ' . $name,
-    'text'    => "Naam:   " . $name    . "\n"
-               . "E-mail: " . $email   . "\n\n"
-               . "Bericht:\n" . $message . "\n",
+    ]);
+
+    if ($method === 'POST') {
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+    }
+
+    $body       = curl_exec($ch);
+    $status     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curl_error = curl_error($ch);
+    curl_close($ch);
+
+    return [
+        'status'     => $status,
+        'body'       => $body ? json_decode($body, true) : null,
+        'curl_error' => $curl_error,
+    ];
+}
+
+// ── Step 1: Look up rev-user by e-mail ─────────────────────────────────────
+// If found, we link them as the ticket reporter.
+// If not found, the ticket is still created — just without a reported_by.
+$rev_user_id = null;
+
+$lookup = devrev_request(
+    'GET',
+    'https://api.devrev.ai/rev-users.list?email=' . urlencode($email),
+    [],
+    $api_key
+);
+
+if (!$lookup['curl_error'] && $lookup['status'] === 200) {
+    $rev_users   = $lookup['body']['rev_users'] ?? [];
+    $rev_user_id = !empty($rev_users) ? ($rev_users[0]['id'] ?? null) : null;
+}
+
+// ── Step 2: Create DevRev ticket ───────────────────────────────────────────
+$payload = [
+    'type'            => 'ticket',
+    'title'           => 'Contact form submission from ' . $name,
+    'body'            => $email . "\n\n" . $name . " wrote:\n\n" . $message,
+    'applies_to_part' => $part_id,
 ];
 
-// ── Call MailerSend API via cURL ───────────────────────────────────────────
-$ch = curl_init('https://api.mailersend.com/v1/email');
+if ($rev_user_id !== null) {
+    $payload['reported_by'] = [$rev_user_id];
+}
 
-curl_setopt_array($ch, [
-    CURLOPT_POST           => true,
-    CURLOPT_POSTFIELDS     => json_encode($payload),
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_TIMEOUT        => 15,
-    CURLOPT_HTTPHEADER     => [
-        'Content-Type: application/json',
-        'Accept: application/json',
-        'X-Requested-With: XMLHttpRequest',
-        'Authorization: Bearer ' . $api_key,
-    ],
-]);
+$ticket = devrev_request(
+    'POST',
+    'https://api.devrev.ai/works.create',
+    $payload,
+    $api_key
+);
 
-$response    = curl_exec($ch);
-$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-$curl_error  = curl_error($ch);
-curl_close($ch);
+// DevRev returns 200 or 201 on success
+$ticket_ok = !$ticket['curl_error']
+    && $ticket['status'] >= 200
+    && $ticket['status'] < 300;
 
-// MailerSend returns 202 Accepted on success
-if (!$curl_error && $http_status === 202) {
+if ($ticket_ok) {
     respond(true, 'Uw bericht is succesvol verzonden.', $is_ajax);
 } else {
-    // Uncomment the line below temporarily to debug in OVHCloud error logs:
-    // error_log('MailerSend error — HTTP ' . $http_status . ': ' . $response . ' | cURL: ' . $curl_error);
+    // Uncomment to debug in OVHCloud error logs:
+    // error_log('DevRev error — HTTP ' . $ticket['status'] . ': ' . json_encode($ticket['body']) . ' | cURL: ' . $ticket['curl_error']);
     respond(false, 'Verzenden mislukt. Probeer het opnieuw of mail ons rechtstreeks.', $is_ajax);
 }
