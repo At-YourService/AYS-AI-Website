@@ -152,9 +152,13 @@ $lookup = devrev_request(
     $api_key
 );
 
-if (!$lookup['curl_error'] && $lookup['status'] === 200) {
+if ($lookup['curl_error']) {
+    error_log('[sendmail] rev-users.list cURL error: ' . $lookup['curl_error']);
+} elseif ($lookup['status'] === 200) {
     $rev_users   = $lookup['body']['rev_users'] ?? [];
     $rev_user_id = !empty($rev_users) ? ($rev_users[0]['id'] ?? null) : null;
+} else {
+    error_log('[sendmail] rev-users.list unexpected HTTP ' . $lookup['status'] . ': ' . json_encode($lookup['body']));
 }
 
 // ── Step 2: Create DevRev ticket ───────────────────────────────────────────
@@ -184,7 +188,6 @@ $ticket_ok = !$ticket['curl_error']
 if ($ticket_ok) {
     respond(true, 'Uw bericht is succesvol verzonden.', $is_ajax);
 } else {
-    // Uncomment to debug in OVHCloud error logs:
-    // error_log('DevRev error — HTTP ' . $ticket['status'] . ': ' . json_encode($ticket['body']) . ' | cURL: ' . $ticket['curl_error']);
+    error_log('[sendmail] works.create failed — HTTP ' . $ticket['status'] . ': ' . json_encode($ticket['body']) . ' | cURL: ' . $ticket['curl_error']);
     respond(false, 'Verzenden mislukt. Probeer het opnieuw of mail ons rechtstreeks.', $is_ajax);
 }
