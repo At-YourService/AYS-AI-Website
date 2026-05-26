@@ -15,6 +15,10 @@ playwright/.cache/
 # Vitest
 .vitest/
 
+# Local test scripts
+test-contact.js
+test-contact.php
+
 # Environment variables
 .env
 .env.local
