@@ -4,6 +4,27 @@ This file defines routines for Claude Code to assist with content management on 
 
 ---
 
+## Bilingual file convention (applies to ALL content types)
+
+Every piece of content — blog posts, events, and jobs — must always be created as **two separate files**: one in Dutch (`_nl.md`) and one in English (`_en.md`).
+
+### Filename pattern
+
+```
+DD_MM_YYYY_slug_nl.md   ← Dutch version
+DD_MM_YYYY_slug_en.md   ← English version
+```
+
+### Rules
+- Both files are created in the **same folder** — no language subfolders
+- The slug is identical in both filenames — only the `_nl` / `_en` suffix differs
+- For **events and jobs**, use the event/posting date for DD_MM_YYYY; for **news**, use today's date
+- All frontmatter fields are translated — including `title` and `excerpt`
+- The `image` field (where applicable) is identical in both files — same image, both languages
+- Always write and save **both files** in one go — never create only one language version
+
+---
+
 ## Routine: New Blog Post
 
 **Trigger:** When asked to create, write, or add a new blog post.
@@ -12,32 +33,30 @@ This file defines routines for Claude Code to assist with content management on 
 
 1. **Ask for the topic or title** if not already provided.
 2. **Scan existing posts** in `/news/` to:
-   - Identify all tags/categories already in use (from `category:` frontmatter fields)
+   - Identify all categories already in use (from `category:` frontmatter fields)
    - Match the writing tone and post length
-3. **Generate the blog post** following the rules below.
-4. **Save the file** to `/news/` using the filename convention: `DD_MM_YYYY_slug.md`
-   - Derive the slug from the title (lowercase, words joined by underscores, max 5 words)
-   - Use today's date for DD_MM_YYYY
-5. **Confirm** by outputting the full file path and a summary of what was written.
+3. **Generate both language versions** following the rules below.
+4. **Save both files** to `/news/`:
+   - `/news/DD_MM_YYYY_slug_nl.md`
+   - `/news/DD_MM_YYYY_slug_en.md`
+5. **Confirm** by listing both file paths and a one-line summary of the post.
 
 ---
 
 ### Frontmatter format
 
-Every post must start with this exact frontmatter block:
-
 ```yaml
 ---
-title: <Post title, sentence case>
+title: <Post title, sentence case — translated per language>
 category: <Single category — match an existing one from /news/ if possible>
-excerpt: <One or two sentences. Enticing, punchy. Written in Dutch.>
+excerpt: <One or two sentences, enticing and punchy — translated per language>
 ---
 ```
 
 **Rules:**
 - `title`: Sentence case, no trailing period, max ~10 words
-- `category`: Reuse an existing category from the `/news/` folder when relevant (e.g. `Events`, `Insights`, `News`). If none fit, propose a new one and confirm with the user.
-- `excerpt`: Always in **Dutch**. Should make the reader want to click. Max 2 sentences.
+- `category`: Reuse an existing category from `/news/` when relevant (e.g. `Events`, `Insights`, `News`). If none fit, propose one and confirm with the user.
+- `excerpt`: Max 2 sentences. Should make the reader want to click.
 
 ---
 
@@ -58,27 +77,25 @@ excerpt: <One or two sentences. Enticing, punchy. Written in Dutch.>
 
 ---
 
-*Wil je meer weten? [Contacteer ons](https://at-yourservice.ai/contact).*
+*[NL] Wil je meer weten? [Contacteer ons](https://at-yourservice.ai/contact).*
+*[EN] Want to know more? [Contact us](https://at-yourservice.ai/contact).*
 ```
 
 **Rules:**
-- Body language: **Dutch** (default) unless the user explicitly asks for English or French
 - Tone: Warm, confident, forward-looking — not dry consulting-speak. AYS speaks like a knowledgeable colleague, not a brochure.
-- Length: 200–400 words for event/news posts; 400–700 words for insight/opinion posts
+- Length: 200–400 words for news posts; 400–700 words for insight/opinion posts
 - Always end with a CTA linking to `https://at-yourservice.ai/contact`
 - Use `##` for section headings, never `###` or deeper in short posts
 - No bullet-point-heavy posts — prefer flowing prose
 
 ---
 
-### SEO metadata (add as HTML comment at bottom of file)
-
-After the post body, append:
+### SEO metadata (add as HTML comment at bottom of each file)
 
 ```html
 <!--
 seo_title: <Title tag — max 60 chars, include "At Your Service" or "AYS">
-seo_description: <Meta description — max 155 chars, in Dutch>
+seo_description: <Meta description — max 155 chars, in the file's language>
 seo_keywords: <Comma-separated, 4-6 keywords relevant to the post>
 -->
 ```
@@ -87,36 +104,20 @@ seo_keywords: <Comma-separated, 4-6 keywords relevant to the post>
 
 ### Tag suggestions
 
-After scanning `/news/`, suggest 2–3 relevant tags based on:
-- Existing categories in the folder
-- Key topics in the new post
-
-Present them to the user as suggestions before saving.
+After scanning `/news/`, suggest 2–3 relevant categories based on existing ones and the post topic. Present suggestions before saving.
 
 ---
 
 ### Example invocations
 
 ```bash
-# Minimal — Claude will ask for details
-claude "write a new blog post"
-
-# With topic
 claude "write a new blog post about our partnership with Microsoft"
-
-# With language override
-claude "write a new blog post about AI in healthcare, in English"
-
-# With category hint
 claude "write a new Insights blog post about agentic AI trends in 2026"
 ```
 
----
+### Example output files
 
-### Example output file
-
-**Filename:** `22_05_2026_microsoft_partnership.md`
-
+**`/news/22_05_2026_microsoft_partnership_nl.md`**
 ```markdown
 ---
 title: At Your Service en Microsoft bundelen krachten
@@ -132,10 +133,6 @@ We zijn verheugd om een nieuwe strategische samenwerking met Microsoft België a
 
 ...
 
-## Wat staat er op de planning?
-
-...
-
 ---
 
 *Wil je meer weten? [Contacteer ons](https://at-yourservice.ai/contact).*
@@ -147,6 +144,33 @@ seo_keywords: Microsoft partnership, AI consultancy België, At Your Service, AI
 -->
 ```
 
+**`/news/22_05_2026_microsoft_partnership_en.md`**
+```markdown
+---
+title: At Your Service and Microsoft join forces
+category: News
+excerpt: We're proud to announce our new partnership with Microsoft. Together we make AI adoption more accessible for Belgian businesses.
+---
+
+# At Your Service and Microsoft join forces
+
+We are excited to announce a new strategic partnership with Microsoft Belgium...
+
+## What does this mean for our clients?
+
+...
+
+---
+
+*Want to know more? [Contact us](https://at-yourservice.ai/contact).*
+
+<!--
+seo_title: AYS & Microsoft: AI adoption partnership in Belgium
+seo_description: At Your Service and Microsoft are joining forces to help Belgian businesses grow faster with AI.
+seo_keywords: Microsoft partnership, AI consultancy Belgium, At Your Service, AI adoption
+-->
+```
+
 ---
 
 ## Routine: New Event
@@ -155,38 +179,34 @@ seo_keywords: Microsoft partnership, AI consultancy België, At Your Service, AI
 
 ### What to do
 
-1. **Ask for the event details** if not already provided (minimum needed: title, date, location).
-2. **Scan existing events** in `/events/` to:
-   - Match the writing tone and structure
-   - Avoid duplicate slugs
-3. **Generate the event post** following the rules below.
-4. **Save the file** to `/events/` using the filename convention: `DD_MM_YYYY_slug.md`
-   - Derive the slug from the event title (lowercase, words joined by underscores, max 5 words)
-   - Use the **event date** (not today's date) for DD_MM_YYYY
-5. **Confirm** by outputting the full file path and a summary of what was created.
+1. **Ask for event details** if not already provided (minimum: title, date, location, registration URL).
+2. **Scan existing events** in `/events/` to match tone and avoid duplicate slugs.
+3. **Generate both language versions** following the rules below.
+4. **Save both files** to `/events/`:
+   - `/events/DD_MM_YYYY_slug_nl.md`
+   - `/events/DD_MM_YYYY_slug_en.md`
+   - Use the **event date** for DD_MM_YYYY
+5. **Confirm** by listing both file paths, then show the image reminder.
 
 ---
 
 ### Frontmatter format
 
-Every event must start with this exact frontmatter block:
-
 ```yaml
 ---
-title: <Event title, title case>
+title: <Event title, title case — translated per language>
 category: Events
-excerpt: <One punchy sentence in Dutch. Create urgency or excitement.>
-date: <DD_MM_YYYY — the event date>
+excerpt: <One punchy sentence — translated per language. Create urgency or excitement.>
+date: <DD_MM_YYYY — the event date, identical in both files>
 image: ./images/<slug>.jpg
 ---
 ```
 
 **Rules:**
-- `title`: Title case, max ~10 words
 - `category`: Always `Events` — never change this
-- `excerpt`: Always in **Dutch**. One sentence max. Make it feel exclusive or urgent.
-- `date`: The actual event date in `DD_MM_YYYY` format
-- `image`: Use `./images/<slug>.jpg` where slug matches the filename slug. Remind the user to add the image manually.
+- `excerpt`: One sentence max. Make it feel exclusive or urgent.
+- `date`: Actual event date in `DD_MM_YYYY` — same value in both files
+- `image`: Identical path in both files — same image, both languages
 
 ---
 
@@ -199,32 +219,31 @@ image: ./images/<slug>.jpg
 
 <Second paragraph — context, previous editions, momentum, partners>
 
-<Third paragraph — what attendees will explore / agenda themes, written as flowing prose>
+<Third paragraph or bullet list — agenda themes>
 
-- <Bullet point theme 1>
-- <Bullet point theme 2>
-- <Bullet point theme 3>
+- <Theme 1>
+- <Theme 2>
+- <Theme 3>
 
-<Closing paragraph — warm invite, forward-looking>
+<Closing paragraph — warm invite>
 
-Locatie: <Venue name, City>
+[NL] Locatie: <Venue, City>
+[EN] Location: <Venue, City>
 
-Inschrijven via: <registration_url>
+[NL] Inschrijven via: <registration_url>
+[EN] Register at: <registration_url>
 ```
 
 **Rules:**
-- Body language: **Dutch** (default) unless the user explicitly asks for English or French
-- Tone: Enthusiastic and exclusive — this is an invite, not a press release. Make the reader feel they'd be missing out.
-- Length: 150–300 words. Events are concise — no long essays.
-- Use bullet points for agenda themes (unlike blog posts, bullets are appropriate here)
-- Always end with `Locatie:` and `Inschrijven via:` as plain text lines (no markdown heading)
-- No CTA link to at-yourservice.ai/contact — the registration URL replaces it
+- Tone: Enthusiastic and exclusive — an invite, not a press release
+- Length: 150–300 words per file
+- Bullet points are appropriate for agenda themes
+- Always end with location and registration URL as plain text (no markdown heading)
+- No CTA to at-yourservice.ai/contact — the registration URL replaces it
 
 ---
 
 ### Required details to collect
-
-Before writing, ensure you have:
 
 | Field | Required | Ask if missing |
 |-------|----------|----------------|
@@ -238,15 +257,13 @@ Before writing, ensure you have:
 
 ---
 
-### SEO metadata (add as HTML comment at bottom of file)
-
-After the event body, append:
+### SEO metadata
 
 ```html
 <!--
-seo_title: <Title tag — max 60 chars, include event name and "AYS" or "At Your Service">
-seo_description: <Meta description — max 155 chars, in Dutch, mention date and city>
-seo_keywords: <Comma-separated, 4-6 keywords, include event name, city, AI>
+seo_title: <Max 60 chars, include event name and "At Your Service">
+seo_description: <Max 155 chars, in the file's language, mention date and city>
+seo_keywords: <4-6 keywords, include event name, city, AI>
 -->
 ```
 
@@ -254,62 +271,222 @@ seo_keywords: <Comma-separated, 4-6 keywords, include event name, city, AI>
 
 ### Image reminder
 
-After saving the file, remind the user:
+After saving both files, remind the user:
 
-> 📷 **Don't forget:** Add an event image at `/events/images/<slug>.jpg` to match the `image:` field in the frontmatter.
+> 📷 **Don't forget:** Add an event image at `/events/images/<slug>.jpg` — referenced in both language files.
 
 ---
 
 ### Example invocations
 
 ```bash
-# Minimal — Claude will ask for missing details
-claude "add a new event"
-
-# With key details
 claude "add a new event: AI Summit Brussels on 15 September 2026 at Tour & Taxis, register at lu.ma/ai-summit-bxl"
-
-# With language override
-claude "add a new event about our London roadshow, in English"
+claude "add a new event about our London AI roadshow on 3 October 2026"
 ```
 
 ---
 
-### Example output file
+## Routine: New Job Posting
 
-**Filename:** `09_03_2026_devrev_leadership.md`
+**Trigger:** When asked to create, write, or add a new job posting or vacancy.
+
+### What to do
+
+1. **Ask for job details** if not already provided (minimum: job title, role description, requirements).
+2. **Scan existing jobs** in `/jobs/` to match tone and avoid duplicate slugs.
+3. **Generate both language versions** following the rules below.
+4. **Save both files** to `/jobs/`:
+   - `/jobs/DD_MM_YYYY_slug_nl.md`
+   - `/jobs/DD_MM_YYYY_slug_en.md`
+   - Use today's date for DD_MM_YYYY
+5. **Confirm** by listing both file paths and a one-line summary of the role.
+
+---
+
+### Frontmatter format
+
+```yaml
+---
+title: <Job title — translated per language>
+excerpt: <One or two punchy sentences — translated per language. Make the role sound exciting.>
+image: images/<slug>.jpg
+---
+```
+
+**Rules:**
+- `title`: Clear job title, no trailing period
+- `excerpt`: Max 2 sentences. Lead with impact — what will this person build or achieve?
+- `image`: Identical path in both files. Remind user to add the image manually.
+
+---
+
+### Job body format
 
 ```markdown
+# <Same as frontmatter title>
+
+<Opening paragraph — 2-3 sentences. Who is AYS, what's the mission, why this role exists now.>
+
+## [NL] Wat ga je doen? / [EN] What will you do?
+
+### [NL] <Responsibility area 1> / [EN] <Responsibility area 1>
+
+- <Task>
+- <Task>
+- <Task>
+
+### [NL] <Responsibility area 2> / [EN] <Responsibility area 2>
+
+- <Task>
+- <Task>
+
+## [NL] Wie ben jij? / [EN] Who are you?
+
+- <Requirement>
+- <Requirement>
+- <Requirement>
+
+[NL] Bonuspunten als je: / [EN] Bonus points if you:
+
+- <Nice to have>
+- <Nice to have>
+
+## [NL] Wat bieden wij? / [EN] What do we offer?
+
+- <Benefit>
+- <Benefit>
+- <Benefit>
+```
+
+**Rules:**
+- Tone: Direct, energetic, and human. AYS is a scale-up — avoid stiff HR language. Speak to builders and doers.
+- Length: 350–600 words per file
+- Use `##` for main sections, `###` for sub-areas within responsibilities
+- Bullet points are the norm for tasks, requirements, and benefits
+- No CTA link needed — applicants will find the contact page themselves
+- Do **not** include salary figures unless the user explicitly provides them
+
 ---
-title: DevRev Leadership Circle Amsterdam 2026
-category: Events
-excerpt: Early access voor DevRev Leadership Circle Amsterdam 2026!
-date: 09_03_2026
-image: ./images/devrev_leadership.jpg
+
+### Required details to collect
+
+| Field | Required | Ask if missing |
+|-------|----------|----------------|
+| Job title | ✅ | Yes |
+| Role description / responsibilities | ✅ | Yes — or generate based on title |
+| Requirements / profile | ✅ | Yes — or generate based on title |
+| What AYS offers | ❌ | Use standard benefits from example if not provided |
+| Image filename | ❌ | Default to `images/job_<slug>.jpg` |
+
 ---
 
-# DevRev Leadership Circle Amsterdam 2026
+### Standard benefits (use if not specified by user)
 
-Sluit je bij ons aan om AI-agents aan het werk te zien en ervaar hoe machines en mensen naadloos samenwerken.
+- Een uitdagende rol in een snelgroeiend team / A challenging role in a fast-growing team
+- Werken met de nieuwste AI-technologieën / Working with the latest AI technologies
+- Competitief salarispakket en flexibele werkomstandigheden / Competitive salary and flexible working conditions
 
-Na onze succesvolle Leadership Circle vorig jaar en de overweldigende respons op ons Londense evenement, keren we terug naar Amsterdam voor een nieuwe editie gericht op de toekomst van intelligent werk.
+---
 
-Tijdens Leadership Circle Amsterdam verkennen we wat AI kan betekenen voor jouw organisatie:
+### SEO metadata
 
-- Hoe AI de besluitvorming op directieniveau versterkt
-- De transformatie van leiderschap in een AI-first wereld
-- Navigeren door informatie-asymmetrie met real-time intelligentie
+```html
+<!--
+seo_title: <Job title + "— At Your Service" — max 60 chars>
+seo_description: <Max 155 chars, in the file's language, mention the role and AYS mission>
+seo_keywords: <4-6 keywords: job title, AI, Belgium/Benelux, consultancy, hiring>
+-->
+```
 
-We kijken ernaar uit u deze april te mogen verwelkomen.
+---
 
-Locatie: Capital C Amsterdam, Noord-Holland
+### Image reminder
 
-Inschrijven via: https://luma.com/Leadership-Circle-Amsterdam
+After saving both files, remind the user:
+
+> 📷 **Don't forget:** Add a job image at `/jobs/images/<slug>.jpg` — referenced in both language files.
+
+---
+
+### Example invocations
+
+```bash
+claude "add a new job posting for an AI Engineer"
+claude "add a new vacancy: AI Project Manager, focus on enterprise clients"
+claude "create a job post for a Marketing Manager at AYS"
+```
+
+### Example output files
+
+**`/jobs/22_05_2026_ai_development_manager_nl.md`**
+```markdown
+---
+title: Business Development Manager – AI Services
+excerpt: Bouw mee aan de toekomst van AI. Van strategie tot implementatie.
+image: images/ai_development_manager.jpg
+---
+
+# Business Development Manager – AI Services
+
+Wij zijn een snelgroeiende AI scale-up met één missie: organisaties écht slimmer maken met AI...
+
+## Wat ga je doen?
+
+### Nieuwe business creëren
+
+- Jij opent deuren bij middelgrote en grote organisaties.
+- Je bouwt je eigen pipeline en sluit zelfstandig deals.
+
+## Wie ben jij?
+
+- 5+ jaar ervaring in business development of AI/IT-sales.
+- Je begrijpt AI écht (machine learning, LLM's, automatisering).
+
+## Wat bieden wij?
+
+- Een uitdagende rol in een snelgroeiend team.
+- Werken met de nieuwste AI-technologieën.
 
 <!--
-seo_title: DevRev Leadership Circle Amsterdam 2026 — At Your Service
-seo_description: Ontdek de toekomst van intelligent werk op de DevRev Leadership Circle in Amsterdam op 9 maart 2026.
-seo_keywords: DevRev, Leadership Circle, Amsterdam, AI evenement, At Your Service, intelligent werk
+seo_title: Business Development Manager AI — At Your Service
+seo_description: Zoek jij een rol waar je AI-strategie en business development combineert? At Your Service zoekt een BDM.
+seo_keywords: business development manager, AI sales, At Your Service, vacature, Benelux
+-->
+```
+
+**`/jobs/22_05_2026_ai_development_manager_en.md`**
+```markdown
+---
+title: Business Development Manager – AI Services
+excerpt: Help shape the future of AI. From strategy to implementation.
+image: images/ai_development_manager.jpg
+---
+
+# Business Development Manager – AI Services
+
+We are a fast-growing AI scale-up with one mission: making organisations genuinely smarter with AI...
+
+## What will you do?
+
+### Creating new business
+
+- You open doors at mid-sized and large organisations.
+- You build your own pipeline and close deals independently.
+
+## Who are you?
+
+- 5+ years of experience in business development or AI/IT sales.
+- You truly understand AI (machine learning, LLMs, automation).
+
+## What do we offer?
+
+- A challenging role in a fast-growing team.
+- Working with the latest AI technologies.
+
+<!--
+seo_title: Business Development Manager AI — At Your Service
+seo_description: Looking for a role combining AI strategy and business development? At Your Service is hiring a BDM.
+seo_keywords: business development manager, AI sales, At Your Service, vacancy, Benelux
 -->
 ```
 
@@ -321,4 +498,4 @@ seo_keywords: DevRev, Leadership Circle, Amsterdam, AI evenement, At Your Servic
 - **Tagline:** *Helping companies to succeed with AI*
 - **Tone:** Professional but human. Confident, clear, warm. Never corporate or stiff.
 - **Audience:** Business leaders and decision-makers in the Benelux
-- **Default language:** Dutch (unless stated otherwise)
+- **Default languages:** Always produce both Dutch (`_nl.md`) and English (`_en.md`) — never create only one version
