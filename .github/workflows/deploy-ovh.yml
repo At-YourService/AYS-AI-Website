@@ -23,10 +23,10 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp           # OVH cluster100 does not support FTPS explicit
           port: 21
-          server-dir: at-yourservice/
+          server-dir: /home/qkpwfgv/at-yourservice/
           local-dir: ./
           log-level: verbose      # shows exact remote paths — check Actions log to verify landing dir
-          state-name: ../.ftp-deploy-sync-state.json   # keep state outside upload dir to avoid stale-cache skips
+          state-name: .ftp-deploy-sync-state.json   # stored inside server-dir — OVH blocks writes above home subfolders
           exclude: |
             **/.git*
             **/.git*/**
